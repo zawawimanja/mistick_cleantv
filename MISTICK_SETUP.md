@@ -1,11 +1,36 @@
 # Panduan Mi TV Stick 4K (CleanYourTV)
 
+## Paparan Tangkap Layar (Screenshots)
+
+### 1. Skrin Utama (Home Screen)
+Netflix, OTT TV, SmartTube, IPTV Streamer Pro, RTMKlik, Viu + Waktu Solat JAKIM + Wallpaper Hidupan Liar HD:
+![Skrin Utama](screenshots/01_home_screen.png)
+
+### 2. Menu Pilihan Aplikasi (Tile Options)
+Tekan butang Menu atau tekan lama butang OK pada remote:
+![Menu Pilihan](screenshots/02_menu_replace.png)
+
+### 3. Pemilih Aplikasi (App Picker Dialog)
+Tukar mana-mana daripada 6 slot utama dengan mudah menggunakan D-pad remote:
+![App Picker](screenshots/03_app_picker.png)
+
+### 4. Makluman Azan & Auto-Pause (Hormat Azan)
+Automatik menghentikan cerita yang sedang dimainkan dan memaparkan kad waktu solat tenang (Audio Volume 1):
+![Skrin Azan](screenshots/04_azan_screen.png)
+
+---
+
 ## Status Terkini
 - **Model**: Xiaomi TV Stick 4K (`MiTV-AYFR0`, codename `soul`)
 - **Android**: Android TV 11 (SDK 30)
-- **IP Address**: `192.168.0.141`
-- **Launcher**: CleanYourTV (Gaya Apple TV) - Saiz: 561 KB
-- **Dock Apps**: SmartTube, Netflix, IPTV Streamer Pro, Durioo+
+- **Launcher**: CleanYourTV (Gaya Glass / Apple TV)
+- **6 Slot Utama**: Netflix, OTT TV, SmartTube, IPTV Streamer Pro, RTMKlik, Viu
+- **Durioo+**: Dikeluarkan dari dock dan disorok sepenuhnya (`hidden_apps`)
+- **Ciri Tambahan**:
+  - Auto RAM & Memory Cleaner (menjimatkan RAM 2GB Mi Stick)
+  - Auto-Pause video & Audio Alert Volume 1 waktu Azan (JAKIM WLY01)
+  - Wallpaper Alam Semulajadi & Hidupan Liar HD (rotasi tanpa ulangan)
+  - App Picker mudah tukar aplikasi bila-bila masa guna remote
 - **Backup**: Disimpan di folder `backup/` dan `~/.cleanyourtv/`
 
 ---
