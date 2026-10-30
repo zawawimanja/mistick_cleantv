@@ -1,3 +1,34 @@
+# 📺 CleanYourTV (Custom Edition – Xiaomi Mi TV Stick 4K)
+
+> 🌟 **Kredit & Penghargaan (Attribution):**  
+> Repository ini adalah edisi tersuai (*custom fork*) khas untuk **Xiaomi Mi TV Stick 4K (Malaysia)** yang diasaskan daripada projek sumber terbuka hebat **[CleanYourTV oleh Gathin23](https://github.com/Gathin23/cleanyourtv)**. Hak cipta asal kekal milik pencipta asal di bawah **Lesen MIT**.  
+> Versi tersuai ini menambah fungsi **Waktu Solat JAKIM Malaysia**, **Auto RAM & Memory Cleaner** (khas untuk RAM 2GB Mi Stick), **Pemilih Aplikasi (App Picker)** via remote D-pad, **Auto-Pause tontonan waktu azan**, dan **rotasi wallpaper haiwan HD**.
+
+---
+
+## 📸 Hasil Sebenar di Xiaomi Mi TV Stick 4K
+
+### 1. Skrin Utama (Home Screen)
+Tampilan bersih gaya Apple TV tanpa sebarang iklan. Dilengkapi 6 aplikasi pilihan utama (**Netflix**, **OTT TV**, **SmartTube**, **IPTV Streamer Pro**, **RTMKlik**, **Viu**), kad Waktu Solat JAKIM, dan rotasi wallpaper hidupan liar HD:
+<p align="center">
+  <img src="screenshots/01_home_screen.png" alt="Skrin Utama Mi TV Stick 4K" width="100%">
+</p>
+
+### 2. Menu Pilihan & Penukar Aplikasi Mudah (App Picker Dialog)
+Tekan & tahan (hold) butang OK atau butang Menu pada remote untuk menukar mana-mana daripada 6 slot utama terus guna D-pad remote:
+<p align="center">
+  <img src="screenshots/02_menu_replace.png" alt="Menu Pilihan" width="49%">
+  <img src="screenshots/03_app_picker.png" alt="Pemilih Aplikasi" width="49%">
+</p>
+
+### 3. Makluman Waktu Solat & Auto-Pause Tontonan (Hormat Azan)
+Bila waktu azan masuk, movie di Netflix atau YouTube akan **automatik di-PAUSE**, dan kad makluman waktu solat yang tenang dipaparkan bersama alert audio perlahan (Volume 1). Tekan sebarang butang remote untuk tutup serta-merta:
+<p align="center">
+  <img src="screenshots/04_azan_screen.png" alt="Makluman Azan" width="85%">
+</p>
+
+---
+
 <p align="center">
   <a href="https://cleanyour.tv/halloween"><img src="https://raw.githubusercontent.com/Gathin23/cleanyourtv/main/docs/banner-halloween.png" alt="CleanYourTV, Halloween edition. Your TV, minus the ads. Strip the bloatware from any Android TV or Google TV over Wi-Fi and replace the ad-filled home screen with a clean launcher that looks like an Apple TV. No root, no cable, nothing uninstalled, and a one-line restore. Now with a pumpkin." width="800"></a>
 </p>
