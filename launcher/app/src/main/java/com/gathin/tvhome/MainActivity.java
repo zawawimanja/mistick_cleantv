@@ -3,7 +3,9 @@ package com.gathin.tvhome;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Dialog;
+import android.util.Log;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -163,6 +165,12 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     private boolean heroDotsShown = true;
     /** The artwork's opacity behind the cinematic shelf (config.xml cinematic_art); 0 leaves it out. */
     private float heroArtAlpha = 0.5f;
+
+    private PrayerHelper prayerHelper;
+    private int upPressCount = 0;
+    private long lastUpPressTime = 0;
+    private int downPressCount = 0;
+    private long lastDownPressTime = 0;
     /** Softened artwork per app (HeroArt, about 5 KB each), made the first time its dock tile is focused. */
     private final Map<String, Bitmap> heroArtCache = new HashMap<>();
     /** The app whose artwork heroArt shows, so focusing it again only fades it back in. */
@@ -293,6 +301,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     private boolean promptsPaused;
     /** Between onStop and onStart: Home was fully covered by an app, not just by the translucent quick panel. */
     private boolean stopped;
+    private boolean wasCoveredByApp = false;
     /** Between onStart and onStop: Home is (at least partly) on screen. */
     private boolean started;
     /**
@@ -417,6 +426,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             if (festive) updateWifiLabel();
             sky.update();
             wallpaperPlayer.update();
+            if (prayerHelper != null) prayerHelper.updateView(root);
             handler.postDelayed(this, MINUTE_MS);
         }
     };
@@ -650,6 +660,9 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         Order savedOrder = Order.load(Order.file(this));
         adapter.setSavedOrder(Order.ranks(savedOrder, dockApps), Order.docked(savedOrder, dockApps));
         grid.setAdapter(adapter);
+        adapter.setHideOtherApps(true);
+        prayerHelper = PrayerHelper.getInstance(this);
+        prayerHelper.updateView(root);
 
         // tvOS layout: push the dock row towards the bottom of the screen, leaving room for
         // rows_below_dock grid rows under it; the rest of the grid stays below until you press Down.
@@ -978,6 +991,12 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        if (AzanActivity.isRunning()) {
+            AzanActivity.stopAndFinish();
+        }
+        if (prayerHelper != null && prayerHelper.isAzanPlaying()) {
+            prayerHelper.stopAzan();
+        }
         if (openLauncherSettingsIfAsked(intent)) return;
         if (openInputsIfAsked(intent)) return;
         if (intent == null || !intent.hasCategory(Intent.CATEGORY_HOME)) return;
@@ -1058,6 +1077,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         if (gameDay != null) gameDay.start();
         sky.update();
         wallpaperPlayer.start();
+        if (prayerHelper != null) prayerHelper.updateView(root);
         handler.postDelayed(minuteTick, MINUTE_MS);
         if (festive && lamp != null) {
             lamp.start();
@@ -1066,6 +1086,10 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
                 lastPetalShower = today;
                 handler.postDelayed(this::playPetalShower, 450);
             }
+        }
+        if (wasCoveredByApp) {
+            wasCoveredByApp = false;
+            performAutoMemoryClean();
         }
     }
 
@@ -1253,6 +1277,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         unregisterReceiver(timeReceiver);
         handler.removeCallbacks(clockCheck);
         stopped = true;
+        wasCoveredByApp = true;
         tileRefresh.onStop();
     }
 
@@ -1291,6 +1316,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (prayerHelper != null) prayerHelper.stopAzan();
         if (gameDay != null) gameDay.shutdown();
         unregisterReceiver(packageReceiver);
         wallpaperPlayer.close();
@@ -1335,6 +1361,63 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
      */
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
+        if (prayerHelper != null && prayerHelper.isAzanPlaying() && event.getAction() == KeyEvent.ACTION_DOWN) {
+            int code = event.getKeyCode();
+            if (code == KeyEvent.KEYCODE_HOME || code == KeyEvent.KEYCODE_BACK
+                    || code == KeyEvent.KEYCODE_DPAD_CENTER || code == KeyEvent.KEYCODE_ENTER) {
+                prayerHelper.stopAzan();
+                if (code != KeyEvent.KEYCODE_HOME) {
+                    return true;
+                }
+            }
+        }
+        if (event.getKeyCode() == KeyEvent.KEYCODE_HOME) {
+            if (AzanActivity.isRunning()) {
+                AzanActivity.stopAndFinish();
+                return true;
+            }
+            if (prayerHelper != null && prayerHelper.isAzanPlaying()) {
+                prayerHelper.stopAzan();
+                return true;
+            }
+        }
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            int c = event.getKeyCode();
+            if (c == KeyEvent.KEYCODE_DPAD_UP) {
+                long now = android.os.SystemClock.uptimeMillis();
+                if (now - lastUpPressTime < 1000) {
+                    upPressCount++;
+                } else {
+                    upPressCount = 1;
+                }
+                lastUpPressTime = now;
+                if (upPressCount >= 3) {
+                    upPressCount = 0;
+                    if (adapter != null && !adapter.isHideOtherApps()) {
+                        adapter.setHideOtherApps(true);
+                        android.widget.Toast.makeText(this, "Other apps tersembunyi (Tekan Down 3x untuk buka)", android.widget.Toast.LENGTH_SHORT).show();
+                    }
+                }
+            } else if (c == KeyEvent.KEYCODE_DPAD_DOWN) {
+                long now = android.os.SystemClock.uptimeMillis();
+                if (now - lastDownPressTime < 1000) {
+                    downPressCount++;
+                } else {
+                    downPressCount = 1;
+                }
+                lastDownPressTime = now;
+                if (downPressCount >= 3) {
+                    downPressCount = 0;
+                    if (adapter != null && adapter.isHideOtherApps()) {
+                        adapter.setHideOtherApps(false);
+                        android.widget.Toast.makeText(this, "Semua apps dipaparkan", android.widget.Toast.LENGTH_SHORT).show();
+                    }
+                }
+            } else if (c != KeyEvent.KEYCODE_DPAD_CENTER && c != KeyEvent.KEYCODE_ENTER) {
+                upPressCount = 0;
+                downPressCount = 0;
+            }
+        }
         // Vendor keys (TCL Netflix button, 4062) never reach the key services, only the focused window.
         if (event.getKeyCode() >= 1000 && RemoteKeys.handle(this, event, homeAppKeys.get(event.getKeyCode()), null)) return true;
         if (handleSettingsKey(event)) return true;
@@ -3567,7 +3650,13 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         if (dockRow && position < adapter.movableCount()) {
             boolean inDock = position < COLUMNS;
             addSettingsMenuRow(rows, popup, inDock ? R.string.tile_replace_in_dock : R.string.tile_add_to_dock,
-                    () -> startDockEditFor(key, inDock));
+                    () -> {
+                        if (inDock) {
+                            showAppPickerForSlot(position);
+                        } else {
+                            startDockEditFor(key, inDock);
+                        }
+                    });
         }
         if (position < adapter.movableCount()) addSettingsMenuRow(rows, popup, R.string.tile_move, () -> {
             if (!beginReorder()) return;
@@ -3577,10 +3666,13 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             pickUp(at);
             Toast.makeText(this, R.string.reorder_hint, Toast.LENGTH_LONG).show();
         });
-        if (appLibraryEnabled) addSettingsMenuRow(rows, popup, R.string.library_remove_shortcut, () -> {
-            if (LibraryApps.save(this, pkg, false)) reloadApps(false);
-            else Toast.makeText(this, R.string.library_save_failed, Toast.LENGTH_LONG).show();
-        });
+        if (appLibraryEnabled) {
+            addSettingsMenuRow(rows, popup, R.string.app_library, this::onLibraryRequested);
+            addSettingsMenuRow(rows, popup, R.string.library_remove_shortcut, () -> {
+                if (LibraryApps.save(this, pkg, false)) reloadApps(false);
+                else Toast.makeText(this, R.string.library_save_failed, Toast.LENGTH_LONG).show();
+            });
+        }
         // Some firmware has no App info page at all; a row that only toasts "can't open" helps nobody.
         Intent info = SystemSettings.appInfo(this, pkg);
         if (info != null) addSettingsMenuRow(rows, popup, R.string.library_app_info, () -> open(info));
@@ -3631,6 +3723,138 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             return true;
         });
         rows.addView(row);
+    }
+
+    private void showAppPickerForSlot(int slot) {
+        if (slot < 0 || slot >= COLUMNS) return;
+        PackageManager pm = getPackageManager();
+        List<ResolveInfo> allApps = new ArrayList<>();
+        Set<String> seen = new HashSet<>();
+
+        Intent leanback = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LEANBACK_LAUNCHER);
+        for (ResolveInfo ri : pm.queryIntentActivities(leanback, 0)) {
+            if (ri.activityInfo != null && !getPackageName().equals(ri.activityInfo.packageName)) {
+                if (seen.add(ri.activityInfo.packageName)) {
+                    allApps.add(ri);
+                }
+            }
+        }
+        Intent regular = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER);
+        for (ResolveInfo ri : pm.queryIntentActivities(regular, 0)) {
+            if (ri.activityInfo != null && !getPackageName().equals(ri.activityInfo.packageName)) {
+                if (seen.add(ri.activityInfo.packageName)) {
+                    allApps.add(ri);
+                }
+            }
+        }
+
+        Collections.sort(allApps, (a, b) -> {
+            String la = a.loadLabel(pm).toString();
+            String lb = b.loadLabel(pm).toString();
+            return la.compareToIgnoreCase(lb);
+        });
+
+        if (allApps.isEmpty()) {
+            Toast.makeText(this, R.string.library_empty, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String[] labels = new String[allApps.size()];
+        int currentChecked = -1;
+        String currentPkg = adapter.packageAt(slot);
+        for (int i = 0; i < allApps.size(); i++) {
+            labels[i] = allApps.get(i).loadLabel(pm).toString();
+            if (allApps.get(i).activityInfo.packageName.equals(currentPkg)) {
+                currentChecked = i;
+            }
+        }
+
+        new android.app.AlertDialog.Builder(this)
+                .setTitle(getString(R.string.tile_replace_in_dock) + " (Kad " + (slot + 1) + ")")
+                .setSingleChoiceItems(labels, currentChecked, (dialog, which) -> {
+                    dialog.dismiss();
+                    if (which >= 0 && which < allApps.size()) {
+                        applyAppToSlot(slot, allApps.get(which));
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
+    private void applyAppToSlot(int slot, ResolveInfo picked) {
+        if (picked == null || picked.activityInfo == null) return;
+        PackageManager pm = getPackageManager();
+        String pkg = picked.activityInfo.packageName;
+        String cls = picked.activityInfo.name;
+        String newKey = new ComponentName(pkg, cls).flattenToShortString();
+        String label = picked.loadLabel(pm).toString();
+
+        List<String> keys = new ArrayList<>(adapter.movableKeys());
+        while (keys.size() <= slot) {
+            keys.add(newKey);
+        }
+
+        int existingIndex = keys.indexOf(newKey);
+        if (existingIndex >= 0 && existingIndex != slot) {
+            String oldAtSlot = keys.get(slot);
+            keys.set(slot, newKey);
+            keys.set(existingIndex, oldAtSlot);
+        } else {
+            keys.set(slot, newKey);
+        }
+
+        LibraryApps.save(this, pkg, true);
+
+        Order order = new Order(Order.dockKey(dockApps), keys, COLUMNS);
+        if (Order.save(Order.file(this), order)) {
+            adapter.setSavedOrder(Order.ranks(order, dockApps), Order.docked(order, dockApps));
+            reloadApps(false);
+            Toast.makeText(this, label + " dimasukkan ke Kad " + (slot + 1), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void performAutoMemoryClean() {
+        new Thread(() -> {
+            try {
+                // Wait briefly for the UI entrance animation and first frame to settle smoothly
+                Thread.sleep(1500);
+
+                // 1. Reclaim launcher internal garbage and finish finalizers
+                System.gc();
+                System.runFinalization();
+
+                // 2. Kill lingering background cached processes of heavy apps to free RAM
+                ActivityManager am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+                if (am != null) {
+                    String[] heavyApps = {
+                        "com.netflix.ninja",
+                        "appnovatica.tv",
+                        "org.smarttube.stable",
+                        "com.amazon.amazonvideo.livingroom",
+                        "com.vuclip.viu.tv",
+                        "my.com.tonton.screen",
+                        "com.iptvstreamer.iptvstreamerpro",
+                        "com.tcl.browser",
+                        "com.esaba.downloader",
+                        "com.analiti.fastest.android"
+                    };
+                    for (String pkg : heavyApps) {
+                        try {
+                            am.killBackgroundProcesses(pkg);
+                        } catch (Throwable ignored) {
+                        }
+                    }
+
+                    ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
+                    am.getMemoryInfo(mi);
+                    long freeMb = mi.availMem / (1024 * 1024);
+                    long totalMb = mi.totalMem / (1024 * 1024);
+                    Log.i("CleanYourTV", "RAM auto-cleaned: " + freeMb + "MB free of " + totalMb + "MB (lowMemory=" + mi.lowMemory + ")");
+                }
+            } catch (Throwable t) {
+                // non-fatal
+            }
+        }, "RAM-Cleaner").start();
     }
 
     /**

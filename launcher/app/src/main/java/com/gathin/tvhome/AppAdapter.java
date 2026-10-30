@@ -221,6 +221,18 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     /** Packages drawn from their icon and name even when they have a banner (config.xml icon_tiles). */
     private final Set<String> iconTiles;
     private final List<Entry> items = new ArrayList<>();
+    private boolean hideOtherApps = false;
+
+    public void setHideOtherApps(boolean hide) {
+        if (this.hideOtherApps != hide) {
+            this.hideOtherApps = hide;
+            notifyDataSetChanged();
+        }
+    }
+
+    public boolean isHideOtherApps() {
+        return hideOtherApps;
+    }
 
     AppAdapter(Context ctx, TileListener listener, int dockSize, Config cfg) {
         this.ctx = ctx;
@@ -562,12 +574,22 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemCount() {
+        if (hideOtherApps) {
+            return Math.min(MainActivity.COLUMNS, items.size());
+        }
         return items.size() + (showLibrary ? 1 : 0);
     }
 
-    int appCount() { return items.size(); }
+    int appCount() {
+        if (hideOtherApps) {
+            return Math.min(MainActivity.COLUMNS, items.size());
+        }
+        return items.size();
+    }
 
-    boolean isLibraryAt(int position) { return showLibrary && position == items.size(); }
+    boolean isLibraryAt(int position) {
+        return !hideOtherApps && showLibrary && position == items.size();
+    }
 
     @Override public int getItemViewType(int position) { return isLibraryAt(position) ? 1 : 0; }
 

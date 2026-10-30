@@ -1,0 +1,16 @@
+{
+  "columns": 6,
+  "dock_glass": true,
+  "dock_row": true,
+  "fill_dock": true,
+  "wallpaper": true,
+  "wallpaper_true_color": true,
+  "wallpaper_captions": false,
+  "wallpaper_rotation_minutes": 1,
+  "wallpaper_order": "sequential",
+  "tile_menu": true,
+  "app_library": true,
+  "library_button": true,
+  "show_library_pill": false,
+  "app_library_selection": true
+}

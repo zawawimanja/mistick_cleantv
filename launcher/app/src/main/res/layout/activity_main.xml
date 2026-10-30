@@ -131,6 +131,10 @@
             android:fontFamily="@string/font_light"
             android:letterSpacing="-0.02"
             android:includeFontPadding="false"
+            android:shadowColor="#CC000000"
+            android:shadowDx="1.5"
+            android:shadowDy="2.0"
+            android:shadowRadius="3.0"
             android:singleLine="true" />
 
         <!-- Cinematic shelf only: when the app was last opened, and the dock position dots. -->
@@ -144,6 +148,10 @@
             android:textColor="#B3FFFFFF"
             android:textSize="15sp"
             android:fontFamily="@string/font_light"
+            android:shadowColor="#CC000000"
+            android:shadowDx="1.5"
+            android:shadowDy="2.0"
+            android:shadowRadius="3.0"
             android:visibility="gone" />
 
         <LinearLayout
@@ -197,6 +205,10 @@
                     android:textSize="12sp"
                     android:fontFamily="@string/font_medium"
                     android:letterSpacing="0.22"
+                    android:shadowColor="#CC000000"
+                    android:shadowDx="1.0"
+                    android:shadowDy="1.5"
+                    android:shadowRadius="2.0"
                     android:textAllCaps="true" />
 
                 <LinearLayout
@@ -215,6 +227,10 @@
                         android:textSize="52sp"
                         android:fontFamily="@string/font_light"
                         android:letterSpacing="-0.04"
+                        android:shadowColor="#CC000000"
+                        android:shadowDx="1.5"
+                        android:shadowDy="2.0"
+                        android:shadowRadius="3.0"
                         android:includeFontPadding="false" />
 
                     <TextClock
@@ -230,6 +246,10 @@
                         android:textSize="15sp"
                         android:fontFamily="@string/font_medium"
                         android:letterSpacing="0.08"
+                        android:shadowColor="#CC000000"
+                        android:shadowDx="1.0"
+                        android:shadowDy="1.5"
+                        android:shadowRadius="2.0"
                         android:textAllCaps="true" />
 
                     <View
@@ -262,6 +282,10 @@
                             android:textSize="17sp"
                             android:fontFamily="@string/font_regular"
                             android:letterSpacing="0.02"
+                            android:shadowColor="#CC000000"
+                            android:shadowDx="1.0"
+                            android:shadowDy="1.5"
+                            android:shadowRadius="2.0"
                             android:includeFontPadding="false"
                             android:visibility="gone" />
 
@@ -280,6 +304,10 @@
                             android:textSize="14sp"
                             android:fontFamily="@string/font_regular"
                             android:letterSpacing="0.14"
+                            android:shadowColor="#CC000000"
+                            android:shadowDx="1.0"
+                            android:shadowDy="1.5"
+                            android:shadowRadius="2.0"
                             android:textAllCaps="true" />
 
                         <!-- Lunar date ("Lunar 13/9 · Year of the Horse"), shown when lunar_date is on. -->
@@ -295,6 +323,10 @@
                             android:textSize="14sp"
                             android:fontFamily="@string/font_regular"
                             android:letterSpacing="0.14"
+                            android:shadowColor="#CC000000"
+                            android:shadowDx="1.0"
+                            android:shadowDy="1.5"
+                            android:shadowRadius="2.0"
                             android:textAllCaps="true"
                             android:visibility="gone" />
                     </LinearLayout>
@@ -380,6 +412,326 @@
                     android:nextFocusDown="@+id/grid" />
             </LinearLayout>
         </RelativeLayout>
+
+        <!-- Waktu Solat (Prayer times) Card -->
+        <LinearLayout
+            android:id="@+id/prayerCard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="vertical"
+            android:background="@drawable/bg_prayer_card"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:focusable="false">
+
+            <!-- Card Header: Location + Hijri Date -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingBottom="6dp">
+
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:src="@drawable/ic_location_pin"
+                    android:contentDescription="@null" />
+
+                <TextView
+                    android:id="@+id/prayerLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="Petaling Jaya (Selangor) (SGR01)"
+                    android:textColor="#E6FFFFFF"
+                    android:textSize="11sp"
+                    android:fontFamily="@string/font_medium"
+                    android:shadowColor="#CC000000"
+                    android:shadowDx="1.0"
+                    android:shadowDy="1.5"
+                    android:shadowRadius="2.0"
+                    android:singleLine="true" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_marginStart="14dp"
+                    android:src="@drawable/ic_calendar"
+                    android:contentDescription="@null" />
+
+                <TextView
+                    android:id="@+id/prayerHijri"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="19 Jamadilawal 1448H"
+                    android:textColor="#CCFFFFFF"
+                    android:textSize="11sp"
+                    android:fontFamily="@string/font_regular"
+                    android:shadowColor="#CC000000"
+                    android:shadowDx="1.0"
+                    android:shadowDy="1.5"
+                    android:shadowRadius="2.0"
+                    android:singleLine="true" />
+            </LinearLayout>
+
+            <!-- 6 Prayer Columns: Subuh, Syuruk, Zohor, Asar, Maghrib, Isyak -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <!-- 1. Subuh -->
+                <LinearLayout
+                    android:id="@+id/slotSubuh"
+                    android:layout_width="66dp"
+                    android:layout_height="48dp"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp">
+
+                    <TextView
+                        android:id="@+id/timeSubuh"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableTop="@drawable/ic_solat_fajr"
+                        android:drawablePadding="2dp"
+                        android:text="05:48"
+                        android:textColor="#FFFFFFFF"
+                        android:textSize="12sp"
+                        android:fontFamily="@string/font_medium"
+                        android:shadowColor="#CC000000"
+                        android:shadowDx="1.0"
+                        android:shadowDy="1.5"
+                        android:shadowRadius="2.0" />
+
+                    <TextView
+                        android:id="@+id/nameSubuh"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Subuh"
+                        android:textColor="#B3FFFFFF"
+                        android:textSize="10sp"
+                        android:fontFamily="@string/font_regular"
+                        android:shadowColor="#CC000000"
+                        android:shadowDx="1.0"
+                        android:shadowDy="1.5"
+                        android:shadowRadius="2.0" />
+                </LinearLayout>
+
+                <!-- 2. Syuruk -->
+                <LinearLayout
+                    android:id="@+id/slotSyuruk"
+                    android:layout_width="66dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="3dp"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp">
+
+                    <TextView
+                        android:id="@+id/timeSyuruk"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableTop="@drawable/ic_solat_sunrise"
+                        android:drawablePadding="2dp"
+                        android:text="06:55"
+                        android:textColor="#FFFFFFFF"
+                        android:textSize="12sp"
+                        android:fontFamily="@string/font_medium"
+                        android:shadowColor="#CC000000"
+                        android:shadowDx="1.0"
+                        android:shadowDy="1.5"
+                        android:shadowRadius="2.0" />
+
+                    <TextView
+                        android:id="@+id/nameSyuruk"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Syuruk"
+                        android:textColor="#B3FFFFFF"
+                        android:textSize="10sp"
+                        android:fontFamily="@string/font_regular"
+                        android:shadowColor="#CC000000"
+                        android:shadowDx="1.0"
+                        android:shadowDy="1.5"
+                        android:shadowRadius="2.0" />
+                </LinearLayout>
+
+                <!-- 3. Zohor -->
+                <LinearLayout
+                    android:id="@+id/slotZohor"
+                    android:layout_width="66dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="3dp"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp">
+
+                    <TextView
+                        android:id="@+id/timeZohor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableTop="@drawable/ic_solat_dhuhr"
+                        android:drawablePadding="2dp"
+                        android:text="13:00"
+                        android:textColor="#FFFFFFFF"
+                        android:textSize="12sp"
+                        android:fontFamily="@string/font_medium"
+                        android:shadowColor="#CC000000"
+                        android:shadowDx="1.0"
+                        android:shadowDy="1.5"
+                        android:shadowRadius="2.0" />
+
+                    <TextView
+                        android:id="@+id/nameZohor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Zohor"
+                        android:textColor="#B3FFFFFF"
+                        android:textSize="10sp"
+                        android:fontFamily="@string/font_regular"
+                        android:shadowColor="#CC000000"
+                        android:shadowDx="1.0"
+                        android:shadowDy="1.5"
+                        android:shadowRadius="2.0" />
+                </LinearLayout>
+
+                <!-- 4. Asar -->
+                <LinearLayout
+                    android:id="@+id/slotAsar"
+                    android:layout_width="66dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="3dp"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:background="@drawable/bg_prayer_active"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp">
+
+                    <TextView
+                        android:id="@+id/timeAsar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableTop="@drawable/ic_solat_asr"
+                        android:drawablePadding="2dp"
+                        android:text="16:19"
+                        android:textColor="#FFFFFFFF"
+                        android:textSize="12sp"
+                        android:fontFamily="@string/font_medium"
+                        android:shadowColor="#CC000000"
+                        android:shadowDx="1.0"
+                        android:shadowDy="1.5"
+                        android:shadowRadius="2.0" />
+
+                    <TextView
+                        android:id="@+id/nameAsar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Asar"
+                        android:textColor="#FFFFFFFF"
+                        android:textSize="10sp"
+                        android:fontFamily="@string/font_regular"
+                        android:shadowColor="#CC000000"
+                        android:shadowDx="1.0"
+                        android:shadowDy="1.5"
+                        android:shadowRadius="2.0" />
+                </LinearLayout>
+
+                <!-- 5. Maghrib -->
+                <LinearLayout
+                    android:id="@+id/slotMaghrib"
+                    android:layout_width="66dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="3dp"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp">
+
+                    <TextView
+                        android:id="@+id/timeMaghrib"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableTop="@drawable/ic_solat_maghrib"
+                        android:drawablePadding="2dp"
+                        android:text="18:59"
+                        android:textColor="#FFFFFFFF"
+                        android:textSize="12sp"
+                        android:fontFamily="@string/font_medium"
+                        android:shadowColor="#CC000000"
+                        android:shadowDx="1.0"
+                        android:shadowDy="1.5"
+                        android:shadowRadius="2.0" />
+
+                    <TextView
+                        android:id="@+id/nameMaghrib"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Maghrib"
+                        android:textColor="#B3FFFFFF"
+                        android:textSize="10sp"
+                        android:fontFamily="@string/font_regular"
+                        android:shadowColor="#CC000000"
+                        android:shadowDx="1.0"
+                        android:shadowDy="1.5"
+                        android:shadowRadius="2.0" />
+                </LinearLayout>
+
+                <!-- 6. Isyak -->
+                <LinearLayout
+                    android:id="@+id/slotIsyak"
+                    android:layout_width="66dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="3dp"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp">
+
+                    <TextView
+                        android:id="@+id/timeIsyak"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableTop="@drawable/ic_solat_isha"
+                        android:drawablePadding="2dp"
+                        android:text="20:09"
+                        android:textColor="#FFFFFFFF"
+                        android:textSize="12sp"
+                        android:fontFamily="@string/font_medium"
+                        android:shadowColor="#CC000000"
+                        android:shadowDx="1.0"
+                        android:shadowDy="1.5"
+                        android:shadowRadius="2.0" />
+
+                    <TextView
+                        android:id="@+id/nameIsyak"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Isyak"
+                        android:textColor="#B3FFFFFF"
+                        android:textSize="10sp"
+                        android:fontFamily="@string/font_regular"
+                        android:shadowColor="#CC000000"
+                        android:shadowDx="1.0"
+                        android:shadowDy="1.5"
+                        android:shadowRadius="2.0" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
 
         <!-- The wrapper clips at the grid's edge; the grid itself must not clip so scaled tiles can overflow their cells. -->
         <FrameLayout

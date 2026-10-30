@@ -32,6 +32,7 @@ import java.util.concurrent.Executors;
 /** Displays and rotates a theme's local wallpaper images while Home is visible. */
 final class WallpaperPlayer {
     private final FrameLayout root;
+    private final Context context;
     private final ImageView image;
     private final int backgroundColor;
     private final List<File> files;
@@ -63,6 +64,8 @@ final class WallpaperPlayer {
     private int[] sun;
 
     WallpaperPlayer(Context context, FrameLayout root, Config config) {
+        this.context = context.getApplicationContext();
+        OnlineWallpaperManager.init(this.context);
         this.root = root;
         backgroundColor = config.backgroundColor;
         files = new ArrayList<>(config.wallpapers);
@@ -90,7 +93,7 @@ final class WallpaperPlayer {
         image.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
         names = config.wallpaperCaptions && config.wallpaperEnabled && !files.isEmpty()
                 ? WallpaperCaptions.read(files.get(0).getParentFile()) : Collections.emptyMap();
-        caption = names.isEmpty() ? null : makeCaption(context, root);
+        caption = null; // Do not add duplicate top-right caption; use left-hand wallpaperCreditBlock under prayer card instead
         if (config.wallpaperEnabled && !files.isEmpty()) {
             root.addView(image, 0, new FrameLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -167,38 +170,32 @@ final class WallpaperPlayer {
 
     void update() {
         if (!active || closed || loading || files.isEmpty()) return;
-        String previous = preferences.getString("image", "");
-        // A picture outside the time of day's group (the group changed) is replaced at once, not after the interval.
-        List<File> playable = playable();
-        File selected = WallpaperRotation.find(playable, previous);
         long changed = preferences.getLong("changed", 0);
-        if (selected == null || WallpaperRotation.due(changed, System.currentTimeMillis(), interval)) {
-            selected = WallpaperRotation.pick(playable, previous, order, random);
-        }
-        if (selected == null || selected.getName().equals(displayed)) return;
-        File next = selected;
+        boolean due = (displayed == null) || WallpaperRotation.due(changed, System.currentTimeMillis(), interval);
+        if (!due) return;
+
+        List<File> playable = playable();
+        File next = !playable.isEmpty() ? playable.get(random.nextInt(playable.size())) : null;
+
         loading = true;
         decoder.execute(() -> {
-            Bitmap bitmap = decode(next);
+            Bitmap onlineBitmap = OnlineWallpaperManager.fetchNextBitmap(context, width, height, bitmapConfig);
+            final Bitmap result = (onlineBitmap != null) ? onlineBitmap : (next != null ? decode(next) : null);
             root.post(() -> {
                 loading = false;
                 if (closed || !active) {
-                    if (bitmap != null) bitmap.recycle();
+                    if (result != null) result.recycle();
                     return;
                 }
-                if (bitmap == null) {
-                    files.remove(next);
-                    Log.w("TvHome.Wallpaper", "Skipping unreadable image: " + next.getName());
-                    update();
+                if (result == null) {
+                    Log.w("TvHome.Wallpaper", "Skipping unreadable image");
                     return;
                 }
-                show(bitmap);
-                displayed = next.getName();
+                show(result);
+                displayed = "wall_" + System.currentTimeMillis();
                 showCaption(true);
-                if (!displayed.equals(previous) || changed == 0) {
-                    preferences.edit().putString("image", displayed)
-                            .putLong("changed", System.currentTimeMillis()).apply();
-                }
+                preferences.edit().putString("image", displayed)
+                        .putLong("changed", System.currentTimeMillis()).apply();
             });
         });
     }

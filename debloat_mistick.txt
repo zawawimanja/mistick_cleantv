@@ -1,0 +1,46 @@
+# Debloat list for Xiaomi TV Stick 4K (MiTV-AYFR0, soul)
+# Customized for user: Keeping Netflix, SmartTube, OTT TV
+
+# Xiaomi + Google telemetry and attribution
+com.miui.tv.analytics
+com.xiaomi.statistic
+com.google.android.feedback
+com.android.tv.feedbackconsent
+com.google.android.partnersetup
+
+# Privacy Sandbox ad APIs, on-device personalisation and federated learning
+com.android.adservices.api
+com.android.ondevicepersonalization.services
+com.android.federatedcompute.services
+
+# Health Connect, which nothing on a stick uses
+com.android.healthconnect.controller
+com.android.health.connect.backuprestore
+
+# Contacts and calendar sync, unused on a stick
+com.android.providers.contacts
+com.google.android.syncadapters.calendar
+
+# PatchWall, content rows, promos, auto-installs
+com.mitv.tvhome.atv
+com.mitv.tvhome.michannel
+com.mitv.tvhome.mitvplus
+com.xm.webcontent
+android.autoinstalls.config.soc.amlogic
+android.autoinstalls.config.xiaomi.mibox3
+android.autoinstalls.config.xioami.mibox3
+
+# Xiaomi update service (re-enable to check for firmware updates)
+com.xiaomi.mitv.updateservice
+
+# Preloaded apps to disable
+# (Netflix is KEPT: com.netflix.ninja, com.netflix.tokenmanager)
+com.amazon.amazonvideo.livingroom
+com.google.android.youtube.tvmusic
+com.google.android.play.games
+com.google.android.marvin.talkback
+com.mitv.videoplayer
+com.xiaomi.mimusic2
+com.android.printspooler
+com.google.android.backdrop
+

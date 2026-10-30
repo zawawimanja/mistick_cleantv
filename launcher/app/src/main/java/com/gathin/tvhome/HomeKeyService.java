@@ -254,6 +254,25 @@ public class HomeKeyService extends AccessibilityService {
 
     @Override
     protected boolean onKeyEvent(KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            if (PrayerHelper.isAzanPlayingStatic()) {
+                int code = event.getKeyCode();
+                if (code == KeyEvent.KEYCODE_HOME || code == KeyEvent.KEYCODE_ALL_APPS) {
+                    PrayerHelper.stopAzanStatic();
+                } else if (code == KeyEvent.KEYCODE_BACK || code == KeyEvent.KEYCODE_DPAD_CENTER || code == KeyEvent.KEYCODE_ENTER) {
+                    PrayerHelper.stopAzanStatic();
+                    return true;
+                }
+            }
+        }
+        if (event.getKeyCode() == KeyEvent.KEYCODE_HOME || event.getKeyCode() == KeyEvent.KEYCODE_ALL_APPS) {
+            if (AzanActivity.isRunning()) {
+                AzanActivity.stopAndFinish();
+            }
+            if (PrayerHelper.isAzanPlayingStatic()) {
+                PrayerHelper.stopAzanStatic();
+            }
+        }
         // power_on_home: the first key after power-on hands the TV to the user (power and wake keys don't count).
         if (powerOnUntil != 0 && event.getAction() == KeyEvent.ACTION_DOWN
                 && event.getKeyCode() != KeyEvent.KEYCODE_POWER && event.getKeyCode() != KeyEvent.KEYCODE_WAKEUP) {
