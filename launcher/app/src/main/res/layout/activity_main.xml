@@ -413,19 +413,27 @@
             </LinearLayout>
         </RelativeLayout>
 
-        <!-- Waktu Solat (Prayer times) Card -->
+        <!-- Dashboard Widgets Row (Waktu Solat + Dynamic Live Feed) -->
         <LinearLayout
-            android:id="@+id/prayerCard"
-            android:layout_width="wrap_content"
+            android:id="@+id/dashboardRow"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:orientation="vertical"
-            android:background="@drawable/bg_prayer_card"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:focusable="false">
+            android:orientation="horizontal"
+            android:baselineAligned="false">
+
+            <!-- Waktu Solat (Prayer times) Card -->
+            <LinearLayout
+                android:id="@+id/prayerCard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_prayer_card"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:focusable="false">
 
             <!-- Card Header: Location + Hijri Date -->
             <LinearLayout
@@ -732,6 +740,86 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+
+        <!-- Dynamic Live Feed Card (News, Sports, Forex, Tazkirah) -->
+        <LinearLayout
+            android:id="@+id/feedCard"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_marginStart="14dp"
+            android:background="@drawable/bg_prayer_card"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:orientation="vertical"
+            android:focusable="false">
+
+            <!-- Header: Badge + Source + Index -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/feedBadge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_feed_badge"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:text="BERITA"
+                    android:textColor="#FFFFFF"
+                    android:textSize="10sp"
+                    android:fontFamily="@string/font_medium"
+                    android:letterSpacing="0.05" />
+
+                <TextView
+                    android:id="@+id/feedSource"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Utama"
+                    android:textColor="#B3FFFFFF"
+                    android:textSize="11sp"
+                    android:fontFamily="@string/font_regular"
+                    android:singleLine="true" />
+
+                <TextView
+                    android:id="@+id/feedIndex"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1/4"
+                    android:textColor="#80FFFFFF"
+                    android:textSize="10sp"
+                    android:fontFamily="@string/font_light" />
+            </LinearLayout>
+
+            <!-- Headline -->
+            <TextView
+                android:id="@+id/feedHeadline"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:layout_marginTop="4dp"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:text="Memuatkan berita dan maklumat terkini..."
+                android:textColor="#FFFFFFFF"
+                android:textSize="13sp"
+                android:fontFamily="@string/font_medium"
+                android:lineSpacingExtra="2dp"
+                android:shadowColor="#CC000000"
+                android:shadowDx="1.0"
+                android:shadowDy="1.5"
+                android:shadowRadius="2.0" />
+        </LinearLayout>
+    </LinearLayout>
 
         <!-- The wrapper clips at the grid's edge; the grid itself must not clip so scaled tiles can overflow their cells. -->
         <FrameLayout

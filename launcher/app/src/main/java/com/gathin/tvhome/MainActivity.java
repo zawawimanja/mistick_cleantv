@@ -167,6 +167,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     private float heroArtAlpha = 0.5f;
 
     private PrayerHelper prayerHelper;
+    private DynamicFeedHelper feedHelper;
     private int upPressCount = 0;
     private long lastUpPressTime = 0;
     private int downPressCount = 0;
@@ -427,6 +428,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             sky.update();
             wallpaperPlayer.update();
             if (prayerHelper != null) prayerHelper.updateView(root);
+        if (feedHelper != null) feedHelper.resume();
             handler.postDelayed(this, MINUTE_MS);
         }
     };
@@ -663,6 +665,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         adapter.setHideOtherApps(true);
         prayerHelper = PrayerHelper.getInstance(this);
         prayerHelper.updateView(root);
+        feedHelper = DynamicFeedHelper.getInstance(this);
+        feedHelper.attachView(root);
 
         // tvOS layout: push the dock row towards the bottom of the screen, leaving room for
         // rows_below_dock grid rows under it; the rest of the grid stays below until you press Down.
@@ -1078,6 +1082,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         sky.update();
         wallpaperPlayer.start();
         if (prayerHelper != null) prayerHelper.updateView(root);
+        if (feedHelper != null) feedHelper.resume();
         handler.postDelayed(minuteTick, MINUTE_MS);
         if (festive && lamp != null) {
             lamp.start();
@@ -1252,6 +1257,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         root.removeCallbacks(showIdleClock);
         endReorder();   // Home or another app while reordering keeps the order so far
         wallpaperPlayer.stop();
+        if (feedHelper != null) feedHelper.pause();
         stopAmbientAnimation();
         hero.animate().cancel();
         ambient.animate().cancel();
@@ -1317,6 +1323,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     protected void onDestroy() {
         super.onDestroy();
         if (prayerHelper != null) prayerHelper.stopAzan();
+        if (feedHelper != null) feedHelper.destroy();
         if (gameDay != null) gameDay.shutdown();
         unregisterReceiver(packageReceiver);
         wallpaperPlayer.close();
