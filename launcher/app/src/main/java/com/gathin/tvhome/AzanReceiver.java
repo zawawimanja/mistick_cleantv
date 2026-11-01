@@ -37,6 +37,14 @@ public class AzanReceiver extends BroadcastReceiver {
             return;
         }
 
+        if ("com.gathin.tvhome.ACTION_DISMISS_AZAN".equals(action)) {
+            NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            if (nm != null) {
+                nm.cancel(1001);
+            }
+            return;
+        }
+
         String prayerName = intent != null ? intent.getStringExtra("prayer_name") : null;
         if (prayerName == null || prayerName.isEmpty()) {
             prayerName = "Solat";
@@ -99,9 +107,10 @@ public class AzanReceiver extends BroadcastReceiver {
                         .setSmallIcon(R.drawable.ic_solat_fajr)
                         .setContentTitle("WAKTU SOLAT " + prayerName.toUpperCase())
                         .setContentText(helper.getLocation())
-                        .setPriority(NotificationCompat.PRIORITY_MAX)
-                        .setCategory(NotificationCompat.CATEGORY_ALARM)
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setCategory(NotificationCompat.CATEGORY_EVENT)
                         .setFullScreenIntent(pi, true)
+                        .setTimeoutAfter(20000)
                         .setAutoCancel(true);
 
                 nm.notify(1001, nb.build());

@@ -25,4 +25,11 @@ launcher/replay_pid*.log
 .jdk17/
 .venv/
 azan.mp3
+scratch/
+jdk-*/
+*.png
+*.html
+backup_tv.py
+debloat_tanix.txt
+*.ttf
 

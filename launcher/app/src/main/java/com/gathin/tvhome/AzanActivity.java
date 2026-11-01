@@ -1,6 +1,7 @@
 package com.gathin.tvhome;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioAttributes;
@@ -9,6 +10,8 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -22,6 +25,7 @@ public class AzanActivity extends Activity {
     private static final String TAG = "TvHome.AzanActivity";
     private static volatile AzanActivity sInstance = null;
 
+    private final Handler dismissHandler = new Handler(Looper.getMainLooper());
     private AudioManager audioManager;
     private AudioFocusRequest focusRequest;
     private MediaPlayer mediaPlayer;
@@ -40,6 +44,11 @@ public class AzanActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sInstance = this;
+
+        try {
+            NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            if (nm != null) nm.cancel(1001);
+        } catch (Exception ignored) {}
 
         getWindow().addFlags(
                 WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
@@ -153,11 +162,11 @@ public class AzanActivity extends Activity {
                 Log.i(TAG, "Azan audio playback started from: " + chosen.getAbsolutePath());
             } catch (Exception e) {
                 Log.e(TAG, "Error starting mediaPlayer: " + e.getMessage(), e);
-                finishGracefully();
+                dismissHandler.postDelayed(this::finishGracefully, 20000);
             }
         } else {
-            Log.w(TAG, "Azan audio file not found, finishing");
-            finishGracefully();
+            Log.i(TAG, "Azan audio file not found, showing serene visual card for 20 seconds");
+            dismissHandler.postDelayed(this::finishGracefully, 20000);
         }
     }
 
@@ -183,6 +192,12 @@ public class AzanActivity extends Activity {
     }
 
     public synchronized void finishGracefully() {
+        try {
+            dismissHandler.removeCallbacksAndMessages(null);
+            NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            if (nm != null) nm.cancel(1001);
+        } catch (Exception ignored) {}
+
         try {
             if (mediaPlayer != null) {
                 if (mediaPlayer.isPlaying()) {

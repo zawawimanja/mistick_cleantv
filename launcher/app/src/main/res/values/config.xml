@@ -17,9 +17,10 @@
 
     <!-- Apps pinned to the dock row at the bottom, in this order. Missing apps are skipped. -->
     <string-array name="dock_apps">
-        <item>com.netflix.ninja</item>
-        <item>appnovatica.tv</item>
         <item>org.smarttube.stable</item>
+        <item>com.netflix.mediaclient</item>
+        <item>com.ionitech.airscreen</item>
+        <item>com.google.android.youtube.tv</item>
         <item>com.iptvstreamer.iptvstreamerpro</item>
         <item>my.gov.rtm.tv</item>
         <item>com.vuclip.viu.tv</item>
@@ -34,6 +35,10 @@
 
     <!-- Apps never shown as tiles (e.g. the Live TV app, which the Inputs menu already covers). -->
     <string-array name="hidden_apps">
+        <item>com.oranth.tvlauncher</item>
+        <item>org.cosinus.launchertv</item>
+        <item>com.oranth.update</item>
+        <item>com.droidlogic.otaupgrade</item>
         <item>ott.durioo1</item>
         <item>com.mediatek.wwtv.tvcenter</item>
         <item>com.mitv.gallery</item>
@@ -413,6 +418,8 @@
          (many China-market TVs, e.g. Coocaa 8R145), a fresh Home with app_library on would otherwise be
          nearly empty. Empty (off) by default, so existing setups change nothing. -->
     <string-array name="library_apps" translatable="false">
+        <item>com.videoplayer.smarttube</item>
+        <item>com.netflix.mediaclient</item>
     </string-array>
 
     <!-- Packages the App library catalogue never offers, even with app_library on (config.xml

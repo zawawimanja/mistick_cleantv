@@ -1,0 +1,190 @@
+{
+  "generatedAt": "2026-11-01T16:15:00Z",
+  "available": true,
+  "stations": [
+    {
+      "id": "era",
+      "name": "ERA FM",
+      "tagline": "Muzik Hit Terbaik",
+      "group": "Astro Radio",
+      "logo": "https://d62zl39gesnj2.cloudfront.net/stations/era/2025/era_square_updated.png",
+      "stream": "https://stream.rcs.revma.com/crec9cmbv4uvv"
+    },
+    {
+      "id": "sinar",
+      "name": "SINAR FM",
+      "tagline": "Menyinari Hidupmu",
+      "group": "Astro Radio",
+      "logo": "https://d62zl39gesnj2.cloudfront.net/stations/sinar/2025/sinar_square_updated.png",
+      "stream": "https://stream.rcs.revma.com/azatk0tbv4uvv"
+    },
+    {
+      "id": "gegar",
+      "name": "GEGAR",
+      "tagline": "Pilihan #1 Pantai Timur",
+      "group": "Astro Radio",
+      "logo": "https://d62zl39gesnj2.cloudfront.net/stations/gegar/2025/gegar_square_updated.png",
+      "stream": "https://stream.rcs.revma.com/cn0zcqsbv4uvv"
+    },
+    {
+      "id": "zayan",
+      "name": "ZAYAN",
+      "tagline": "Destinasi Nasyid & Gaya Hidup Muslim",
+      "group": "Astro Radio",
+      "logo": "https://d62zl39gesnj2.cloudfront.net/stations/zayan/2025/zayan_square_updated.png",
+      "stream": "https://stream.rcs.revma.com/7ww2a4tbv4uvv"
+    },
+    {
+      "id": "hitz",
+      "name": "HITZ FM",
+      "tagline": "Malaysia's #1 Hit Music Station",
+      "group": "Astro Radio",
+      "logo": "https://d62zl39gesnj2.cloudfront.net/stations/hitz/2025/hitz_square_updated.png",
+      "stream": "https://stream.rcs.revma.com/488kt4sbv4uvv"
+    },
+    {
+      "id": "my",
+      "name": "MY FM",
+      "tagline": "My Music, My Way",
+      "group": "Astro Radio",
+      "logo": "https://d62zl39gesnj2.cloudfront.net/stations/my/2025/my_square_updated.png",
+      "stream": "https://stream.rcs.revma.com/hc3unrtbv4uvv"
+    },
+    {
+      "id": "mix",
+      "name": "MIX FM",
+      "tagline": "Today's Best Music",
+      "group": "Astro Radio",
+      "logo": "https://d62zl39gesnj2.cloudfront.net/stations/mix/2025/mix_square_updated.png",
+      "stream": "https://stream.rcs.revma.com/v5pq3htbv4uvv"
+    },
+    {
+      "id": "lite",
+      "name": "LITE FM",
+      "tagline": "Relaxing Favourites",
+      "group": "Astro Radio",
+      "logo": "https://d62zl39gesnj2.cloudfront.net/stations/lite/2025/lite_square_updated.png",
+      "stream": "https://stream.rcs.revma.com/bn4ex8sbv4uvv"
+    },
+    {
+      "id": "raaga",
+      "name": "RAAGA",
+      "tagline": "Malaysia's No. 1 Tamil Station",
+      "group": "Astro Radio",
+      "logo": "https://d62zl39gesnj2.cloudfront.net/stations/raaga/2025/raaga_square_updated.png",
+      "stream": "https://stream.rcs.revma.com/1ut6qwtbv4uvv"
+    },
+    {
+      "id": "melody",
+      "name": "MELODY FM",
+      "tagline": "Classic Chinese Hits",
+      "group": "Astro Radio",
+      "logo": "https://d62zl39gesnj2.cloudfront.net/stations/melody/2025/melody_square_updated.png",
+      "stream": "https://stream.rcs.revma.com/2u1n6dtbv4uvv"
+    },
+    {
+      "id": "hotfm",
+      "name": "Hot FM",
+      "tagline": "Muzik Paling Hangat",
+      "group": "Media Prima Audio",
+      "logo": "https://assets-mpa.hotfm.audio/media/Logo/profile_photo_1000x1000-01_v2.jpg",
+      "stream": "https://stream.rcs.revma.com/drakdf8mtd3vv/hls.m3u8"
+    },
+    {
+      "id": "flyfm",
+      "name": "Fly FM",
+      "tagline": "Playing Malaysia's Flyest Music",
+      "group": "Media Prima Audio",
+      "logo": "https://assets-mpa.flyfm.audio/media/Logo/profile_photo_1000x1000-04.jpg",
+      "stream": "https://stream.rcs.revma.com/q17aka9mtd3vv"
+    },
+    {
+      "id": "eightfm",
+      "name": "Eight FM",
+      "tagline": "Your Day, Your Music",
+      "group": "Media Prima Audio",
+      "logo": "https://assets-mpa.eight.audio/media/Logo/logo-eight-wu-xian-1000x1000-09.jpg",
+      "stream": "https://stream.rcs.revma.com/qp0xrd9mtd3vv"
+    },
+    {
+      "id": "suria",
+      "name": "Suria FM",
+      "tagline": "Segalanya Hiburan",
+      "group": "Star Media Radio",
+      "logo": "https://suria.my/wp-content/themes/suria/assets/images/logo.png",
+      "stream": "https://playerservices.streamtheworld.com/api/livestream-redirect/SURIA_FMAAC.aac"
+    },
+    {
+      "id": "988",
+      "name": "988 FM",
+      "tagline": "Total Hits & News",
+      "group": "Star Media Radio",
+      "logo": "https://www.988.com.my/wp-content/themes/988_web/assets/988-logo.png",
+      "stream": "https://28103.live.streamtheworld.com/988_FMAAC.aac"
+    },
+    {
+      "id": "radioklasik",
+      "name": "Radio Klasik",
+      "tagline": "Menggamit Kenangan",
+      "group": "RTM Radio",
+      "logo": "https://rtm-images.glueapi.io/420x0/radio-asset/RADIO_KLASIK.png",
+      "stream": "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO_KLASIKAAC_SC"
+    },
+    {
+      "id": "nasionalfm",
+      "name": "Nasional FM",
+      "tagline": "Sentiasa Di Hati",
+      "group": "RTM Radio",
+      "logo": "https://rtm-images.glueapi.io/420x0/radio-asset/NASIONAL_FM.png",
+      "stream": "http://playerservices.streamtheworld.com/api/livestream-redirect/NASIONAL_FM.mp3"
+    },
+    {
+      "id": "traxxfm",
+      "name": "TraXX FM",
+      "tagline": "Experience the Difference",
+      "group": "RTM Radio",
+      "logo": "https://rtm-images.glueapi.io/420x0/radio-asset/TRAXX_FM.png",
+      "stream": "https://playerservices.streamtheworld.com/api/livestream-redirect/TRAXX_FMAAC_SC"
+    },
+    {
+      "id": "aifm",
+      "name": "Ai FM",
+      "tagline": "RTM Chinese Radio",
+      "group": "RTM Radio",
+      "logo": "https://aifm.rtm.gov.my/storage/app/uploads/public/610/366/55c/61036655c4ab3209025602.png",
+      "stream": "https://playerservices.streamtheworld.com/api/livestream-redirect/AI_FMAAC_SC"
+    },
+    {
+      "id": "minnalfm",
+      "name": "Minnal FM",
+      "tagline": "RTM Tamil Radio",
+      "group": "RTM Radio",
+      "logo": "https://rtm-images.glueapi.io/420x0/radio-asset/MINNAL_FM.png",
+      "stream": "https://playerservices.streamtheworld.com/api/livestream-redirect/MINNAL_FMAAC_SC"
+    },
+    {
+      "id": "asyikfm",
+      "name": "Asyik FM",
+      "tagline": "Radio Orang Asli Malaysia",
+      "group": "RTM Radio",
+      "logo": "https://upload.wikimedia.org/wikipedia/en/b/b3/Asyik_FM_Logo.PNG",
+      "stream": "http://playerservices.streamtheworld.com/api/livestream-redirect/ASYIK_FM.mp3"
+    },
+    {
+      "id": "bfm",
+      "name": "BFM 89.9",
+      "tagline": "The Business Station",
+      "group": "Independent",
+      "logo": "https://www.bfm.my/favicon.ico",
+      "stream": "https://playerservices.streamtheworld.com/api/livestream-redirect/BFM_SC"
+    },
+    {
+      "id": "catsfm",
+      "name": "Cats FM",
+      "tagline": "Nang Antap Sarawak",
+      "group": "Sarawak",
+      "logo": "https://catsfm.my/wp-content/themes/catsfm/assets/images/logo.png",
+      "stream": "https://stream.rcs.revma.com/51qe53rv0y3vv.m4a"
+    }
+  ]
+}

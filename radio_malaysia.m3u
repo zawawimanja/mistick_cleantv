@@ -1,0 +1,47 @@
+#EXTM3U
+#EXTINF:-1 tvg-id="era" tvg-name="ERA FM" tvg-logo="https://d62zl39gesnj2.cloudfront.net/stations/era/2025/era_square_updated.png" group-title="Astro Radio",ERA FM - Muzik Hit Terbaik
+https://stream.rcs.revma.com/crec9cmbv4uvv
+#EXTINF:-1 tvg-id="sinar" tvg-name="SINAR FM" tvg-logo="https://d62zl39gesnj2.cloudfront.net/stations/sinar/2025/sinar_square_updated.png" group-title="Astro Radio",SINAR FM - Menyinari Hidupmu
+https://stream.rcs.revma.com/azatk0tbv4uvv
+#EXTINF:-1 tvg-id="gegar" tvg-name="GEGAR" tvg-logo="https://d62zl39gesnj2.cloudfront.net/stations/gegar/2025/gegar_square_updated.png" group-title="Astro Radio",GEGAR - Pilihan #1 Pantai Timur
+https://stream.rcs.revma.com/cn0zcqsbv4uvv
+#EXTINF:-1 tvg-id="zayan" tvg-name="ZAYAN" tvg-logo="https://d62zl39gesnj2.cloudfront.net/stations/zayan/2025/zayan_square_updated.png" group-title="Astro Radio",ZAYAN - Destinasi Nasyid & Gaya Hidup Muslim
+https://stream.rcs.revma.com/7ww2a4tbv4uvv
+#EXTINF:-1 tvg-id="hitz" tvg-name="HITZ FM" tvg-logo="https://d62zl39gesnj2.cloudfront.net/stations/hitz/2025/hitz_square_updated.png" group-title="Astro Radio",HITZ FM - Malaysia's #1 Hit Music Station
+https://stream.rcs.revma.com/488kt4sbv4uvv
+#EXTINF:-1 tvg-id="my" tvg-name="MY FM" tvg-logo="https://d62zl39gesnj2.cloudfront.net/stations/my/2025/my_square_updated.png" group-title="Astro Radio",MY FM - My Music, My Way
+https://stream.rcs.revma.com/hc3unrtbv4uvv
+#EXTINF:-1 tvg-id="mix" tvg-name="MIX FM" tvg-logo="https://d62zl39gesnj2.cloudfront.net/stations/mix/2025/mix_square_updated.png" group-title="Astro Radio",MIX FM - Today's Best Music
+https://stream.rcs.revma.com/v5pq3htbv4uvv
+#EXTINF:-1 tvg-id="lite" tvg-name="LITE FM" tvg-logo="https://d62zl39gesnj2.cloudfront.net/stations/lite/2025/lite_square_updated.png" group-title="Astro Radio",LITE FM - Relaxing Favourites
+https://stream.rcs.revma.com/bn4ex8sbv4uvv
+#EXTINF:-1 tvg-id="raaga" tvg-name="RAAGA" tvg-logo="https://d62zl39gesnj2.cloudfront.net/stations/raaga/2025/raaga_square_updated.png" group-title="Astro Radio",RAAGA - Malaysia's No. 1 Tamil Station
+https://stream.rcs.revma.com/1ut6qwtbv4uvv
+#EXTINF:-1 tvg-id="melody" tvg-name="MELODY FM" tvg-logo="https://d62zl39gesnj2.cloudfront.net/stations/melody/2025/melody_square_updated.png" group-title="Astro Radio",MELODY FM - Classic Chinese Hits
+https://stream.rcs.revma.com/2u1n6dtbv4uvv
+#EXTINF:-1 tvg-id="hotfm" tvg-name="Hot FM" tvg-logo="https://assets-mpa.hotfm.audio/media/Logo/profile_photo_1000x1000-01_v2.jpg" group-title="Media Prima Audio",Hot FM - Muzik Paling Hangat
+https://stream.rcs.revma.com/drakdf8mtd3vv/hls.m3u8
+#EXTINF:-1 tvg-id="flyfm" tvg-name="Fly FM" tvg-logo="https://assets-mpa.flyfm.audio/media/Logo/profile_photo_1000x1000-04.jpg" group-title="Media Prima Audio",Fly FM - Playing Malaysia's Flyest Music
+https://stream.rcs.revma.com/q17aka9mtd3vv
+#EXTINF:-1 tvg-id="eightfm" tvg-name="Eight FM" tvg-logo="https://assets-mpa.eight.audio/media/Logo/logo-eight-wu-xian-1000x1000-09.jpg" group-title="Media Prima Audio",Eight FM - Your Day, Your Music
+https://stream.rcs.revma.com/qp0xrd9mtd3vv
+#EXTINF:-1 tvg-id="suria" tvg-name="Suria FM" tvg-logo="https://suria.my/wp-content/themes/suria/assets/images/logo.png" group-title="Star Media Radio",Suria FM - Segalanya Hiburan
+https://playerservices.streamtheworld.com/api/livestream-redirect/SURIA_FMAAC.aac
+#EXTINF:-1 tvg-id="988" tvg-name="988 FM" tvg-logo="https://www.988.com.my/wp-content/themes/988_web/assets/988-logo.png" group-title="Star Media Radio",988 FM - Total Hits & News
+https://28103.live.streamtheworld.com/988_FMAAC.aac
+#EXTINF:-1 tvg-id="radioklasik" tvg-name="Radio Klasik" tvg-logo="https://rtm-images.glueapi.io/420x0/radio-asset/RADIO_KLASIK.png" group-title="RTM Radio",Radio Klasik - Menggamit Kenangan
+https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO_KLASIKAAC_SC
+#EXTINF:-1 tvg-id="nasionalfm" tvg-name="Nasional FM" tvg-logo="https://rtm-images.glueapi.io/420x0/radio-asset/NASIONAL_FM.png" group-title="RTM Radio",Nasional FM - Sentiasa Di Hati
+http://playerservices.streamtheworld.com/api/livestream-redirect/NASIONAL_FM.mp3
+#EXTINF:-1 tvg-id="traxxfm" tvg-name="TraXX FM" tvg-logo="https://rtm-images.glueapi.io/420x0/radio-asset/TRAXX_FM.png" group-title="RTM Radio",TraXX FM - Experience the Difference
+https://playerservices.streamtheworld.com/api/livestream-redirect/TRAXX_FMAAC_SC
+#EXTINF:-1 tvg-id="aifm" tvg-name="Ai FM" tvg-logo="https://aifm.rtm.gov.my/storage/app/uploads/public/610/366/55c/61036655c4ab3209025602.png" group-title="RTM Radio",Ai FM - RTM Chinese Radio
+https://playerservices.streamtheworld.com/api/livestream-redirect/AI_FMAAC_SC
+#EXTINF:-1 tvg-id="minnalfm" tvg-name="Minnal FM" tvg-logo="https://rtm-images.glueapi.io/420x0/radio-asset/MINNAL_FM.png" group-title="RTM Radio",Minnal FM - RTM Tamil Radio
+https://playerservices.streamtheworld.com/api/livestream-redirect/MINNAL_FMAAC_SC
+#EXTINF:-1 tvg-id="asyikfm" tvg-name="Asyik FM" tvg-logo="https://upload.wikimedia.org/wikipedia/en/b/b3/Asyik_FM_Logo.PNG" group-title="RTM Radio",Asyik FM - Radio Orang Asli Malaysia
+http://playerservices.streamtheworld.com/api/livestream-redirect/ASYIK_FM.mp3
+#EXTINF:-1 tvg-id="bfm" tvg-name="BFM 89.9" tvg-logo="https://www.bfm.my/favicon.ico" group-title="Independent",BFM 89.9 - The Business Station
+https://playerservices.streamtheworld.com/api/livestream-redirect/BFM_SC
+#EXTINF:-1 tvg-id="catsfm" tvg-name="Cats FM" tvg-logo="https://catsfm.my/wp-content/themes/catsfm/assets/images/logo.png" group-title="Sarawak",Cats FM - Nang Antap Sarawak
+https://stream.rcs.revma.com/51qe53rv0y3vv.m4a
