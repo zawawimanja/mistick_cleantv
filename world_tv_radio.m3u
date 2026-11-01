@@ -17,6 +17,20 @@ https://d2idp3hzkhjpih.cloudfront.net/out/v1/4b85d9c2bf97413eb0c9fd875599b837/in
 https://d25tgymtnqzu8s.cloudfront.net/smil:rakyat/playlist.m3u8?id=7
 #EXTINF:-1 tvg-id="parlimennegara" tvg-name="Parlimen Dewan Negara" tvg-chno="125" tvg-logo="https://rtm-images.glueapi.io/320x0/live_channel/SALURAN_1920x1080px_BERITARTM.jpg" group-title="TV Malaysia (RTM & Awani)",Parlimen Dewan Negara
 https://d25tgymtnqzu8s.cloudfront.net/smil:negara/playlist.m3u8?id=8
+#EXTINF:-1 tvg-id="makkahlive" tvg-name="Makkah Live (Masjidil Haram 24 Jam HD)" tvg-chno="301" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Kaaba_during_Hajj.jpg/320px-Kaaba_during_Hajj.jpg" group-title="🕌 Siaran Islamiah & Ceramah (Ibu Bapa)",Makkah Live (Masjidil Haram 24 Jam HD)
+https://cdn-globecast.akamaized.net/live/eds/saudi_quran/hls_roku/index.m3u8
+#EXTINF:-1 tvg-id="madinahlive" tvg-name="Madinah Live (Masjid Nabawi 24 Jam HD)" tvg-chno="302" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Al-Masjid_an-Nabawi_2014.jpg/320px-Al-Masjid_an-Nabawi_2014.jpg" group-title="🕌 Siaran Islamiah & Ceramah (Ibu Bapa)",Madinah Live (Masjid Nabawi 24 Jam HD)
+https://cdn-globecast.akamaized.net/live/eds/saudi_sunnah/hls_roku/index.m3u8
+#EXTINF:-1 tvg-id="saudiqurantv" tvg-name="Saudi Quran TV (Al-Quran 24 Jam HD)" tvg-chno="303" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Kaaba_during_Hajj.jpg/320px-Kaaba_during_Hajj.jpg" group-title="🕌 Siaran Islamiah & Ceramah (Ibu Bapa)",Saudi Quran TV (Al-Quran 24 Jam HD)
+http://m.live.net.sa:1935/live/quran/playlist.m3u8
+#EXTINF:-1 tvg-id="saudisunnahtv" tvg-name="Saudi Sunnah TV (Hadith & Kuliah 24 Jam)" tvg-chno="304" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Al-Masjid_an-Nabawi_2014.jpg/320px-Al-Masjid_an-Nabawi_2014.jpg" group-title="🕌 Siaran Islamiah & Ceramah (Ibu Bapa)",Saudi Sunnah TV (Hadith & Kuliah 24 Jam)
+http://m.live.net.sa:1935/live/sunnah/playlist.m3u8
+#EXTINF:-1 tvg-id="sharjahquran" tvg-name="Sharjah Quran TV (Bacaan Merdu 24 Jam)" tvg-chno="305" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Kaaba_during_Hajj.jpg/320px-Kaaba_during_Hajj.jpg" group-title="🕌 Siaran Islamiah & Ceramah (Ibu Bapa)",Sharjah Quran TV (Bacaan Merdu 24 Jam)
+https://smartech.live/SharjahQuranTV/myStream/playlist.m3u8
+#EXTINF:-1 tvg-id="zayanfm" tvg-name="Zayan FM (Nasyid & Pengisian Rohani)" tvg-chno="306" tvg-logo="https://i.imgur.com/dLzgBUj.png" group-title="🕌 Siaran Islamiah & Ceramah (Ibu Bapa)",Zayan FM (Nasyid & Pengisian Rohani)
+https://stream.rcs.revma.com/7ww2a4tbv4uvv
+#EXTINF:-1 tvg-id="nasyidfm" tvg-name="Nasyid FM (Lagu Ketuhanan 24 Jam)" tvg-chno="307" tvg-logo="https://i.imgur.com/dLzgBUj.png" group-title="🕌 Siaran Islamiah & Ceramah (Ibu Bapa)",Nasyid FM (Lagu Ketuhanan 24 Jam)
+http://stereo.nasyidfm.com:8000/
 #EXTINF:-1 tvg-id="cna" tvg-name="CNA (Channel NewsAsia)" tvg-chno="201" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/CNA_2019_logo.svg/320px-CNA_2019_logo.svg.png" group-title="Berita & Dokumentari",CNA (Channel NewsAsia)
 https://amg01082-cna-amg01082c1-rlaxx-us-11304.playouts.now.amagi.tv/playlist.m3u8
 #EXTINF:-1 tvg-id="aljazeera" tvg-name="Al Jazeera English" tvg-chno="202" tvg-logo="https://upload.wikimedia.org/wikipedia/en/thumb/f/f2/Al_Jazeera_English_logo.svg/320px-Al_Jazeera_English_logo.svg.png" group-title="Berita & Dokumentari",Al Jazeera English
@@ -25,13 +39,9 @@ https://streams.tangotv.in/ALJAZEERAHD/ORIGIN/index.m3u8
 https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/index.m3u8
 #EXTINF:-1 tvg-id="redbull" tvg-name="Red Bull TV (Sukan & Aksi)" tvg-chno="204" tvg-logo="https://upload.wikimedia.org/wikipedia/en/thumb/f/f5/Red_Bull_TV_logo.svg/320px-Red_Bull_TV_logo.svg.png" group-title="Berita & Dokumentari",Red Bull TV (Sukan & Aksi)
 https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master.m3u8
-#EXTINF:-1 tvg-id="makkahlive" tvg-name="Makkah Live (Masjidil Haram 24/7)" tvg-chno="301" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Kaaba_during_Hajj.jpg/320px-Kaaba_during_Hajj.jpg" group-title="Siaran Suci 24 Jam",Makkah Live (Masjidil Haram 24/7)
-https://cdn-globecast.akamaized.net/live/eds/saudi_quran/hls_roku/index.m3u8
-#EXTINF:-1 tvg-id="madinahlive" tvg-name="Madinah Live (Masjid Nabawi 24/7)" tvg-chno="302" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Al-Masjid_an-Nabawi_2014.jpg/320px-Al-Masjid_an-Nabawi_2014.jpg" group-title="Siaran Suci 24 Jam",Madinah Live (Masjid Nabawi 24/7)
-https://cdn-globecast.akamaized.net/live/eds/saudi_sunnah/hls_roku/index.m3u8
 #EXTINF:-1 tvg-id="w_116" tvg-name="00s Replay" tvg-chno="116" tvg-logo="https://images.pluto.tv/channels/62ba60f059624e000781c436/colorLogoPNG.png" group-title="🎬 Movies & Action",00s Replay
 https://jmp2.uk/plu-62ba60f059624e000781c436.m3u8
-#EXTINF:-1 tvg-id="w_117" tvg-name="30A TV Classic Movies (720p)" tvg-chno="117"  group-title="🎬 Movies & Action",30A TV Classic Movies (720p)
+#EXTINF:-1 tvg-id="w_117" tvg-name="30A TV Classic Movies (720p)" tvg-chno="117" group-title="🎬 Movies & Action",30A TV Classic Movies (720p)
 https://30a-tv.com/feeds/pzaz/30atvmovies.m3u8
 #EXTINF:-1 tvg-id="w_118" tvg-name="50 Cent Action (720p)" tvg-chno="118" tvg-logo="https://provider-static.plex.tv/epg/cms/production/bcfb9977-809f-49ae-acc7-430f2c6ffb26/50CentAction_Logo_1500x1000_DarkBG_-_Chris_Connors.png" group-title="🎬 Movies & Action",50 Cent Action (720p)
 https://jmp2.uk/plu-68487fb3f212bedacf5a53e3.m3u8

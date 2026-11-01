@@ -72,6 +72,62 @@
     "url": "https://d25tgymtnqzu8s.cloudfront.net/smil:negara/playlist.m3u8?id=8"
   },
   {
+    "id": "makkahlive",
+    "name": "Makkah Live (Masjidil Haram 24 Jam HD)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Kaaba_during_Hajj.jpg/320px-Kaaba_during_Hajj.jpg",
+    "group": "🕌 Siaran Islamiah & Ceramah (Ibu Bapa)",
+    "url": "https://cdn-globecast.akamaized.net/live/eds/saudi_quran/hls_roku/index.m3u8",
+    "chno": "301"
+  },
+  {
+    "id": "madinahlive",
+    "name": "Madinah Live (Masjid Nabawi 24 Jam HD)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Al-Masjid_an-Nabawi_2014.jpg/320px-Al-Masjid_an-Nabawi_2014.jpg",
+    "group": "🕌 Siaran Islamiah & Ceramah (Ibu Bapa)",
+    "url": "https://cdn-globecast.akamaized.net/live/eds/saudi_sunnah/hls_roku/index.m3u8",
+    "chno": "302"
+  },
+  {
+    "id": "saudiqurantv",
+    "name": "Saudi Quran TV (Al-Quran 24 Jam HD)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Kaaba_during_Hajj.jpg/320px-Kaaba_during_Hajj.jpg",
+    "group": "🕌 Siaran Islamiah & Ceramah (Ibu Bapa)",
+    "url": "http://m.live.net.sa:1935/live/quran/playlist.m3u8",
+    "chno": "303"
+  },
+  {
+    "id": "saudisunnahtv",
+    "name": "Saudi Sunnah TV (Hadith & Kuliah 24 Jam)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Al-Masjid_an-Nabawi_2014.jpg/320px-Al-Masjid_an-Nabawi_2014.jpg",
+    "group": "🕌 Siaran Islamiah & Ceramah (Ibu Bapa)",
+    "url": "http://m.live.net.sa:1935/live/sunnah/playlist.m3u8",
+    "chno": "304"
+  },
+  {
+    "id": "sharjahquran",
+    "name": "Sharjah Quran TV (Bacaan Merdu 24 Jam)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Kaaba_during_Hajj.jpg/320px-Kaaba_during_Hajj.jpg",
+    "group": "🕌 Siaran Islamiah & Ceramah (Ibu Bapa)",
+    "url": "https://smartech.live/SharjahQuranTV/myStream/playlist.m3u8",
+    "chno": "305"
+  },
+  {
+    "id": "zayanfm",
+    "name": "Zayan FM (Nasyid & Pengisian Rohani)",
+    "logo": "https://i.imgur.com/dLzgBUj.png",
+    "group": "🕌 Siaran Islamiah & Ceramah (Ibu Bapa)",
+    "url": "https://stream.rcs.revma.com/7ww2a4tbv4uvv",
+    "chno": "306"
+  },
+  {
+    "id": "nasyidfm",
+    "name": "Nasyid FM (Lagu Ketuhanan 24 Jam)",
+    "logo": "https://i.imgur.com/dLzgBUj.png",
+    "group": "🕌 Siaran Islamiah & Ceramah (Ibu Bapa)",
+    "url": "http://stereo.nasyidfm.com:8000/",
+    "chno": "307"
+  },
+  {
     "id": "cna",
     "name": "CNA (Channel NewsAsia)",
     "chno": "201",
@@ -102,22 +158,6 @@
     "group": "Berita & Dokumentari",
     "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/f/f5/Red_Bull_TV_logo.svg/320px-Red_Bull_TV_logo.svg.png",
     "url": "https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master.m3u8"
-  },
-  {
-    "id": "makkahlive",
-    "name": "Makkah Live (Masjidil Haram 24/7)",
-    "chno": "301",
-    "group": "Siaran Suci 24 Jam",
-    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Kaaba_during_Hajj.jpg/320px-Kaaba_during_Hajj.jpg",
-    "url": "https://cdn-globecast.akamaized.net/live/eds/saudi_quran/hls_roku/index.m3u8"
-  },
-  {
-    "id": "madinahlive",
-    "name": "Madinah Live (Masjid Nabawi 24/7)",
-    "chno": "302",
-    "group": "Siaran Suci 24 Jam",
-    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Al-Masjid_an-Nabawi_2014.jpg/320px-Al-Masjid_an-Nabawi_2014.jpg",
-    "url": "https://cdn-globecast.akamaized.net/live/eds/saudi_sunnah/hls_roku/index.m3u8"
   },
   {
     "id": "w_116",
