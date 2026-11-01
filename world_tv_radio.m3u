@@ -55,9 +55,13 @@ https://jmp2.uk/plu-5f4d86f519358a00072b978e.m3u8
 https://mediaserver.abnvideos.com/streams/abnbiblemovies.m3u8
 #EXTINF:-1 tvg-id="w_123" tvg-name="Allo Cine (1080p)" tvg-chno="123" tvg-logo="https://raw.githubusercontent.com/songwenhui239/Songwenhui239/refs/heads/main/Allo%20Cine.jpeg" group-title="🎬 Movies & Action",Allo Cine (1080p)
 https://d1yl6bf4hrzbr0.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-5km3zs4zs9sp0/allo.m3u8
-#EXTINF:-1 tvg-id="w_124" tvg-name="AMC (United States) (720p)" tvg-chno="124" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/AMC_logo_2019.svg/960px-AMC_logo_2019.svg.png" group-title="🎬 Movies & Action",AMC (United States) (720p)
-http://23.239.31.26:8989/amc/index.m3u8
-#EXTINF:-1 tvg-id="w_125" tvg-name="American Crime Channel" tvg-chno="125" tvg-logo="https://provider-static.plex.tv/epg/cms/production/5d4ac35c-dd3f-4f56-a272-41ebfe3477a9/american_crime_channel_dark_logo_-_Kam_JeyRDXV2.png" group-title="🎬 Movies & Action",American Crime Channel
+#EXTINF:-1 tvg-id="w_cineaction" tvg-name="Cine Action (Blockbuster Aksi)" tvg-chno="124" tvg-logo="https://images.pluto.tv/channels/5f8ed1ff5c39700007e2204a/colorLogoPNG.png" group-title="🎬 Movies & Action",Cine Action (Blockbuster Aksi)
+https://jmp2.uk/plu-5f8ed1ff5c39700007e2204a.m3u8
+#EXTINF:-1 tvg-id="w_crime360" tvg-name="Crime 360 (Siasatan Jenayah)" tvg-chno="125" tvg-logo="https://images.pluto.tv/channels/657880c46e4f6a00087404d0/colorLogoPNG.png" group-title="🕵️ Detektif & Jenayah",Crime 360 (Siasatan Jenayah)
+https://jmp2.uk/plu-657880c46e4f6a00087404d0.m3u8
+#EXTINF:-1 tvg-id="w_classictvcrime" tvg-name="Classic Detective & Crime Drama" tvg-chno="126" tvg-logo="https://images.pluto.tv/channels/61325c4f982acd000723287e/colorLogoPNG.png" group-title="🕵️ Detektif & Jenayah",Classic Detective & Crime Drama
+https://jmp2.uk/plu-61325c4f982acd000723287e.m3u8
+#EXTINF:-1 tvg-id="w_americancrime" tvg-name="American Crime Channel" tvg-chno="127" tvg-logo="https://provider-static.plex.tv/epg/cms/production/5d4ac35c-dd3f-4f56-a272-41ebfe3477a9/american_crime_channel_dark_logo_-_Kam_JeyRDXV2.png" group-title="🕵️ Detektif & Jenayah",American Crime Channel
 https://d39g1vxj2ef6in.cloudfront.net/v1/master/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod-rakuten-stitched/master.m3u8?ads.xumo_channelId=88883104
 #EXTINF:-1 tvg-id="w_126" tvg-name="30A Ridiculous TV (720p)" tvg-chno="126" tvg-logo="https://30a.media/wp-content/uploads/2023/08/pzaz-30atv-2-230x366-ridiculous.jpg" group-title="🤣 Comedy & Fun 24/7",30A Ridiculous TV (720p)
 https://30a-tv.com/feeds/720p/63.m3u8
