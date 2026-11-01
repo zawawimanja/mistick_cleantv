@@ -1,0 +1,31 @@
+#EXTM3U
+#EXTINF:-1 tvg-id="tv1" tvg-name="TV1 (RTM)" tvg-chno="101" tvg-logo="https://tv1.rtm.gov.my/assets/img/TV1.png" group-title="TV Malaysia (RTM & Awani)",TV1 (RTM)
+https://d25tgymtnqzu8s.cloudfront.net/smil:tv1/playlist.m3u8?id=1
+#EXTINF:-1 tvg-id="tv2" tvg-name="TV2 (RTM)" tvg-chno="102" tvg-logo="https://tv2.rtm.gov.my/assets/img/TV2.png" group-title="TV Malaysia (RTM & Awani)",TV2 (RTM)
+https://d25tgymtnqzu8s.cloudfront.net/smil:tv2/playlist.m3u8?id=2
+#EXTINF:-1 tvg-id="tvokey" tvg-name="TV Okey" tvg-chno="110" tvg-logo="https://rtm-images.glueapi.io/320x0/live_channel/SALURAN_1920x1080px_TVOKEY.jpg" group-title="TV Malaysia (RTM & Awani)",TV Okey
+https://d25tgymtnqzu8s.cloudfront.net/smil:okey/playlist.m3u8?id=3
+#EXTINF:-1 tvg-id="tv6" tvg-name="TV6 (Filem & Retro)" tvg-chno="113" tvg-logo="https://rtm-images.glueapi.io/320x0/live_channel/SALURAN_1920x1080px_TV6.jpg" group-title="TV Malaysia (RTM & Awani)",TV6 (Filem & Retro)
+https://d25tgymtnqzu8s.cloudfront.net/smil:tv6/playlist.m3u8?id=6
+#EXTINF:-1 tvg-id="beritartm" tvg-name="Berita RTM" tvg-chno="123" tvg-logo="https://berita.rtm.gov.my/images/01-homepage/logo-berita.png" group-title="TV Malaysia (RTM & Awani)",Berita RTM
+https://d25tgymtnqzu8s.cloudfront.net/smil:berita/playlist.m3u8?id=5
+#EXTINF:-1 tvg-id="sukanrtm" tvg-name="Sukan RTM" tvg-chno="111" tvg-logo="https://rtm-images.glueapi.io/320x0/live_channel/SALURAN_1920x1080px_SUKANRTM.jpg" group-title="TV Malaysia (RTM & Awani)",Sukan RTM
+https://d25tgymtnqzu8s.cloudfront.net/smil:sukan/playlist.m3u8?id=4
+#EXTINF:-1 tvg-id="astroawani" tvg-name="Astro AWANI 24/7" tvg-chno="501" tvg-logo="https://i.imgur.com/dLzgBUj.png" group-title="TV Malaysia (RTM & Awani)",Astro AWANI 24/7
+https://d2idp3hzkhjpih.cloudfront.net/out/v1/4b85d9c2bf97413eb0c9fd875599b837/index.m3u8
+#EXTINF:-1 tvg-id="parlimenrakyat" tvg-name="Parlimen Dewan Rakyat" tvg-chno="124" tvg-logo="https://rtm-images.glueapi.io/320x0/live_channel/SALURAN_1920x1080px_BERITARTM.jpg" group-title="TV Malaysia (RTM & Awani)",Parlimen Dewan Rakyat
+https://d25tgymtnqzu8s.cloudfront.net/smil:rakyat/playlist.m3u8?id=7
+#EXTINF:-1 tvg-id="parlimennegara" tvg-name="Parlimen Dewan Negara" tvg-chno="125" tvg-logo="https://rtm-images.glueapi.io/320x0/live_channel/SALURAN_1920x1080px_BERITARTM.jpg" group-title="TV Malaysia (RTM & Awani)",Parlimen Dewan Negara
+https://d25tgymtnqzu8s.cloudfront.net/smil:negara/playlist.m3u8?id=8
+#EXTINF:-1 tvg-id="cna" tvg-name="CNA (Channel NewsAsia)" tvg-chno="201" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/CNA_2019_logo.svg/320px-CNA_2019_logo.svg.png" group-title="Berita & Dokumentari",CNA (Channel NewsAsia)
+https://amg01082-cna-amg01082c1-rlaxx-us-11304.playouts.now.amagi.tv/playlist.m3u8
+#EXTINF:-1 tvg-id="aljazeera" tvg-name="Al Jazeera English" tvg-chno="202" tvg-logo="https://upload.wikimedia.org/wikipedia/en/thumb/f/f2/Al_Jazeera_English_logo.svg/320px-Al_Jazeera_English_logo.svg.png" group-title="Berita & Dokumentari",Al Jazeera English
+https://streams.tangotv.in/ALJAZEERAHD/ORIGIN/index.m3u8
+#EXTINF:-1 tvg-id="dwenglish" tvg-name="DW English (Dokumentari)" tvg-chno="203" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Deutsche_Welle_symbol_2012.svg/320px-Deutsche_Welle_symbol_2012.svg.png" group-title="Berita & Dokumentari",DW English (Dokumentari)
+https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/index.m3u8
+#EXTINF:-1 tvg-id="redbull" tvg-name="Red Bull TV (Sukan & Aksi)" tvg-chno="204" tvg-logo="https://upload.wikimedia.org/wikipedia/en/thumb/f/f5/Red_Bull_TV_logo.svg/320px-Red_Bull_TV_logo.svg.png" group-title="Berita & Dokumentari",Red Bull TV (Sukan & Aksi)
+https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master.m3u8
+#EXTINF:-1 tvg-id="makkahlive" tvg-name="Makkah Live (Masjidil Haram 24/7)" tvg-chno="301" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Kaaba_during_Hajj.jpg/320px-Kaaba_during_Hajj.jpg" group-title="Siaran Suci 24 Jam",Makkah Live (Masjidil Haram 24/7)
+https://cdn-globecast.akamaized.net/live/eds/saudi_quran/hls_roku/index.m3u8
+#EXTINF:-1 tvg-id="madinahlive" tvg-name="Madinah Live (Masjid Nabawi 24/7)" tvg-chno="302" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Al-Masjid_an-Nabawi_2014.jpg/320px-Al-Masjid_an-Nabawi_2014.jpg" group-title="Siaran Suci 24 Jam",Madinah Live (Masjid Nabawi 24/7)
+https://cdn-globecast.akamaized.net/live/eds/saudi_sunnah/hls_roku/index.m3u8
