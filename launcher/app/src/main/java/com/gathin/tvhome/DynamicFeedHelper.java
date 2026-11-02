@@ -11,6 +11,7 @@ import android.util.Xml;
 import android.view.View;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 
@@ -37,8 +38,8 @@ public class DynamicFeedHelper {
     private final SharedPreferences prefs;
 
     public static class FeedItem {
-        public final String type;       // BERITA, SUKAN, PASARAN, TAZKIRAH
-        public final String source;     // e.g. "Google News", "BBC Football", "Live Forex", "Hadith Sahih"
+        public final String type;       // BERITA, SUKAN, EKONOMI, TAZKIRAH
+        public final String source;     // e.g. "Google News", "BBC Football", "Hadith Sahih", "Al-Quran"
         public final int badgeColor;    // e.g. Color.RED
         public final String headline;
 
@@ -52,8 +53,12 @@ public class DynamicFeedHelper {
 
     private final List<FeedItem> feedItems = new ArrayList<>();
     private int currentIndex = 0;
+    private int totalShownCount = 0;
     private boolean isRunning = false;
     private View attachedRoot = null;
+
+    // Set of seen headlines to guarantee no repeating in sequence
+    private final java.util.Set<String> seenHeadlines = new java.util.LinkedHashSet<>();
 
     private final Runnable rotateRunnable = new Runnable() {
         @Override
@@ -84,6 +89,7 @@ public class DynamicFeedHelper {
 
     public void attachView(View root) {
         this.attachedRoot = root;
+        if (totalShownCount == 0) totalShownCount = 1;
         renderCurrentItem(false);
         resume();
     }
@@ -109,7 +115,11 @@ public class DynamicFeedHelper {
 
     private void showNextItem() {
         if (feedItems.isEmpty()) return;
+        totalShownCount++;
         currentIndex = (currentIndex + 1) % feedItems.size();
+        if (feedItems.size() - currentIndex <= 10) {
+            fetchFeedsAsync();
+        }
         renderCurrentItem(true);
     }
 
@@ -148,47 +158,75 @@ public class DynamicFeedHelper {
 
         source.setText(item.source);
         if (index != null) {
-            index.setText((currentIndex + 1) + "/" + feedItems.size());
+            index.setText("#" + totalShownCount + " • LIVE");
         }
         headline.setText(item.headline);
     }
 
     private void loadInitialData() {
-        // Default preloaded items so the UI is immediately alive
         feedItems.clear();
         feedItems.add(new FeedItem("BERITA", "Utama", Color.parseColor("#D32F2F"),
-                "Selamat datang ke Clean TV Launcher Tanix TX6. Sistem beroperasi lancar."));
-        feedItems.add(new FeedItem("PASARAN", "Forex Semasa", Color.parseColor("#F57F17"),
-                "USD/MYR: 4.42 | SGD/MYR: 3.31 | EUR/MYR: 4.78"));
+                "Selamat datang ke Clean TV Launcher. Sistem beroperasi lancar."));
+        feedItems.add(new FeedItem("EKONOMI", "Perniagaan", Color.parseColor("#E65100"),
+                "Memperkasa keusahawanan dan ekonomi mampan komuniti."));
         feedItems.add(new FeedItem("SUKAN", "Bola Sepak", Color.parseColor("#2E7D32"),
                 "Liga Perdana Inggeris & Liga Super Malaysia bersambung minggu ini."));
-        feedItems.add(new FeedItem("TAZKIRAH", "Al-Quran", Color.parseColor("#00897B"),
-                "\"Sesungguhnya bersama setiap kesulitan ada kemudahan.\" (Surah Al-Insyirah: 6)"));
+        List<FeedItem> tazkirahPool = getCuratedTazkirah();
+        if (!tazkirahPool.isEmpty()) feedItems.add(tazkirahPool.get(0));
     }
 
     public void fetchFeedsAsync() {
         new Thread(() -> {
             try {
-                List<FeedItem> newsItems = fetchGoogleNews();
-                List<FeedItem> sportsItems = fetchBbcSports();
-                FeedItem forexItem = fetchForexRate();
-                List<FeedItem> tazkirahItems = getCuratedTazkirah();
+                List<FeedItem> newsUtama = fetchRssFeed("https://news.google.com/rss?hl=ms&gl=MY&ceid=MY:ms", "BERITA", "Utama", Color.parseColor("#D32F2F"), 45);
+                List<FeedItem> dynamicQuran = fetchDynamicQuranAyahs(20);
+                List<FeedItem> newsDunia = fetchRssFeed("https://news.google.com/rss/headlines/section/topic/WORLD?hl=ms&gl=MY&ceid=MY:ms", "DUNIA", "Antarabangsa", Color.parseColor("#C2185B"), 40);
+                List<FeedItem> newsSukan = fetchRssFeed("https://news.google.com/rss/headlines/section/topic/SPORTS?hl=ms&gl=MY&ceid=MY:ms", "SUKAN", "Sukan", Color.parseColor("#2E7D32"), 40);
+                List<FeedItem> sportsBbc = fetchBbcSports();
+                List<FeedItem> newsBisnes = fetchRssFeed("https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=ms&gl=MY&ceid=MY:ms", "EKONOMI", "Perniagaan", Color.parseColor("#E65100"), 40);
+                List<FeedItem> newsTech = fetchRssFeed("https://news.google.com/rss/headlines/section/topic/TECHNOLOGY?hl=en-MY&gl=MY&ceid=MY:en", "TEKNOLOGI", "Teknologi", Color.parseColor("#0288D1"), 40);
+                List<FeedItem> tazkirahPool = getCuratedTazkirah();
 
-                List<FeedItem> combined = new ArrayList<>();
+                List<FeedItem> candidates = new ArrayList<>();
+                int maxLen = Math.max(newsUtama.size(), Math.max(newsDunia.size(), Math.max(newsSukan.size(), newsBisnes.size())));
 
-                int maxCount = Math.max(newsItems.size(), sportsItems.size());
-                for (int i = 0; i < maxCount; i++) {
-                    if (i < newsItems.size()) combined.add(newsItems.get(i));
-                    if (i < sportsItems.size()) combined.add(sportsItems.get(i));
-                    if (i == 0 && forexItem != null) combined.add(forexItem);
-                    if (i < tazkirahItems.size()) combined.add(tazkirahItems.get(i));
+                for (int i = 0; i < maxLen; i++) {
+                    if (i < newsUtama.size()) candidates.add(newsUtama.get(i));
+                    if (i < dynamicQuran.size()) candidates.add(dynamicQuran.get(i));
+                    if (i < newsDunia.size()) candidates.add(newsDunia.get(i));
+                    if (i < newsSukan.size()) candidates.add(newsSukan.get(i));
+                    if (i < tazkirahPool.size()) candidates.add(tazkirahPool.get(i));
+                    if (i < newsBisnes.size()) candidates.add(newsBisnes.get(i));
+                    if (i < sportsBbc.size()) candidates.add(sportsBbc.get(i));
+                    if (i < newsTech.size()) candidates.add(newsTech.get(i));
                 }
 
-                if (!combined.isEmpty()) {
+                // Filter out already seen headlines (UNLIMITED & JANGAN ULANG)
+                List<FeedItem> fresh = new ArrayList<>();
+                for (FeedItem fi : candidates) {
+                    if (fi != null && fi.headline != null && !fi.headline.isEmpty()) {
+                        if (!seenHeadlines.contains(fi.headline)) {
+                            seenHeadlines.add(fi.headline);
+                            fresh.add(fi);
+                        }
+                    }
+                }
+
+                if (seenHeadlines.size() > 2000) {
+                    seenHeadlines.clear();
+                }
+
+                if (!fresh.isEmpty()) {
                     mainHandler.post(() -> {
-                        feedItems.clear();
-                        feedItems.addAll(combined);
-                        if (currentIndex >= feedItems.size()) currentIndex = 0;
+                        feedItems.addAll(fresh);
+                        // Trim old items from head when queue grows beyond 100 to keep memory lean
+                        if (currentIndex > 35 && feedItems.size() > 100) {
+                            int toRemove = currentIndex - 5;
+                            for (int r = 0; r < toRemove; r++) {
+                                feedItems.remove(0);
+                            }
+                            currentIndex = 5;
+                        }
                         renderCurrentItem(false);
                     });
                 }
@@ -196,62 +234,66 @@ public class DynamicFeedHelper {
                 Log.e(TAG, "Error fetching live feeds: " + e.getMessage());
             }
 
-            // Schedule next refresh
             mainHandler.postDelayed(this::fetchFeedsAsync, REFRESH_INTERVAL_MS);
         }).start();
     }
 
-    private List<FeedItem> fetchGoogleNews() {
+    private List<FeedItem> fetchDynamicQuranAyahs(int count) {
+        List<FeedItem> list = new ArrayList<>();
+        java.util.Random rnd = new java.util.Random();
+        int color = Color.parseColor("#00897B");
+        for (int i = 0; i < count; i++) {
+            int ayah = rnd.nextInt(6236) + 1;
+            try {
+                String json = httpGet("https://api.alquran.cloud/v1/ayah/" + ayah + "/editions/ms.basmeih", 4000);
+                if (json != null) {
+                    JSONObject root = new JSONObject(json);
+                    JSONArray data = root.optJSONArray("data");
+                    if (data != null && data.length() > 0) {
+                        JSONObject item = data.getJSONObject(0);
+                        String text = item.optString("text", "").trim();
+                        JSONObject surah = item.optJSONObject("surah");
+                        String surahName = surah != null ? surah.optString("englishName", "") : "";
+                        int numInSurah = item.optInt("numberInSurah", 1);
+                        if (!text.isEmpty() && text.length() <= 190) {
+                            String headline = "\"" + text + "\" (Surah " + surahName + ": " + numInSurah + ")";
+                            list.add(new FeedItem("TAZKIRAH", "Al-Quran (" + surahName + ")", color, headline));
+                        }
+                    }
+                }
+            } catch (Exception ignored) {}
+        }
+        return list;
+    }
+
+    private List<FeedItem> fetchRssFeed(String url, String badge, String defaultSource, int color, int limit) {
         List<FeedItem> list = new ArrayList<>();
         try {
-            // Main news feed (filtered to exclude any politics)
-            String xml = httpGet("https://news.google.com/rss?hl=ms&gl=MY&ceid=MY:ms", 6000);
+            String xml = httpGet(url, 6000);
             if (xml != null && !xml.isEmpty()) {
-                List<String> titles = parseRssTitles(xml, 25);
+                List<String> titles = parseRssTitles(xml, limit);
                 for (String t : titles) {
-                    if (list.size() >= 5) break;
                     String cleanTitle = t;
-                    String srcName = "Berita Semasa";
+                    String srcName = defaultSource;
                     int lastDash = t.lastIndexOf(" - ");
                     if (lastDash > 0) {
                         cleanTitle = t.substring(0, lastDash).trim();
                         srcName = t.substring(lastDash + 3).trim();
                     }
-                    if (!isPolitical(cleanTitle)) {
-                        list.add(new FeedItem("BERITA", srcName, Color.parseColor("#D32F2F"), cleanTitle));
+                    if (!isExcluded(cleanTitle)) {
+                        list.add(new FeedItem(badge, srcName, color, cleanTitle));
                     }
                 }
             }
-            // If less than 4 items after filtering politics, supplement with technology/science news
-            if (list.size() < 4) {
-                String techXml = httpGet("https://news.google.com/rss/headlines/section/topic/TECHNOLOGY?hl=ms&gl=MY&ceid=MY:ms", 5000);
-                if (techXml != null && !techXml.isEmpty()) {
-                    List<String> techTitles = parseRssTitles(techXml, 10);
-                    for (String t : techTitles) {
-                        if (list.size() >= 5) break;
-                        String cleanTitle = t;
-                        String srcName = "Teknologi & Sains";
-                        int lastDash = t.lastIndexOf(" - ");
-                        if (lastDash > 0) {
-                            cleanTitle = t.substring(0, lastDash).trim();
-                            srcName = t.substring(lastDash + 3).trim();
-                        }
-                        if (!isPolitical(cleanTitle)) {
-                            list.add(new FeedItem("BERITA", srcName, Color.parseColor("#D32F2F"), cleanTitle));
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            Log.d(TAG, "News fetch skipped: " + e.getMessage());
-        }
+        } catch (Exception ignored) {}
         return list;
     }
 
-    private boolean isPolitical(String text) {
+    private boolean isExcluded(String text) {
         if (text == null || text.trim().isEmpty()) return false;
         String lower = text.toLowerCase(java.util.Locale.ROOT);
-        String[] politicalTerms = {
+        String[] excludedTerms = {
+            // Politik & Kontroversi
             "politik", "parlimen", "dewan rakyat", "dewan negara", "dun",
             "pilihan raya", "pru", "prk", "prn", "parti", "pengundi", "undi",
             "perdana menteri", "menteri", "tpm", "kabinet", "kerajaan perpaduan",
@@ -260,9 +302,27 @@ public class DynamicFeedHelper {
             "anwar ibrahim", "muhyiddin", "mahathir", "najib", "zahid hamidi",
             "hadi awang", "sanusi", "rafizi", "akmal saleh", "ahli parlimen",
             "adun", "usul", "sidang parlimen", "manifesto", "wakil rakyat",
-            "presiden parti", "setiausaha agung", "parti politik"
+            "presiden parti", "setiausaha agung", "parti politik",
+
+            // Non-Syariah: Forex, spekulasi mata wang & kripto
+            "forex", "foreign exchange", "kadar tukaran", "mata wang asing", "wang kripto",
+            "kripto", "crypto", "cryptocurrency", "bitcoin", "ethereum", "nft",
+
+            // Non-Syariah: Judi, kasino, loteri, pertaruhan
+            "judi", "kasino", "casino", "pertaruhan", "taruhan", "loteri", "lottery",
+            "nombor ekor", "magnum 4d", "sports toto", "damacai", "genting casino",
+            "poker", "baccarat", "blackjack", "betting",
+
+            // Non-Syariah: Riba, pinjaman haram/riba
+            "riba", "ah long", "ceti haram", "pinjaman wang berlesen",
+
+            // Non-Syariah: Arak, minuman keras, maksiat
+            "arak", "alkohol", "minuman keras", "kelab malam", "pelacuran",
+
+            // Penipuan / Skim
+            "skim cepat kaya", "ponzi", "scam pelaburan"
         };
-        for (String term : politicalTerms) {
+        for (String term : excludedTerms) {
             if (lower.contains(term)) return true;
         }
         return false;
@@ -273,9 +333,11 @@ public class DynamicFeedHelper {
         try {
             String xml = httpGet("https://feeds.bbci.co.uk/sport/football/rss.xml", 6000);
             if (xml != null && !xml.isEmpty()) {
-                List<String> titles = parseRssTitles(xml, 4);
+                List<String> titles = parseRssTitles(xml, 25);
                 for (String t : titles) {
-                    list.add(new FeedItem("SUKAN", "BBC Football", Color.parseColor("#2E7D32"), t));
+                    if (!isExcluded(t)) {
+                        list.add(new FeedItem("SUKAN", "BBC Football", Color.parseColor("#2E7D32"), t));
+                    }
                 }
             }
         } catch (Exception e) {
@@ -284,52 +346,41 @@ public class DynamicFeedHelper {
         return list;
     }
 
-    private FeedItem fetchForexRate() {
-        try {
-            String jsonStr = httpGet("https://open.er-api.com/v6/latest/USD", 6000);
-            if (jsonStr != null) {
-                JSONObject obj = new JSONObject(jsonStr);
-                JSONObject rates = obj.optJSONObject("rates");
-                if (rates != null) {
-                    double myr = rates.optDouble("MYR", 0.0);
-                    double sgd = rates.optDouble("SGD", 0.0);
-                    double eur = rates.optDouble("EUR", 0.0);
-
-                    if (myr > 0) {
-                        double sgdToMyr = (sgd > 0) ? (myr / sgd) : 0;
-                        double eurToMyr = (eur > 0) ? (myr / eur) : 0;
-                        String text = String.format(java.util.Locale.US,
-                                "USD/MYR: %.2f | SGD/MYR: %.2f | EUR/MYR: %.2f", myr, sgdToMyr, eurToMyr);
-                        return new FeedItem("PASARAN", "Kadar Tukaran Semasa", Color.parseColor("#F57F17"), text);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            Log.d(TAG, "Forex fetch skipped: " + e.getMessage());
-        }
-        return null;
-    }
-
     private List<FeedItem> getCuratedTazkirah() {
-        List<FeedItem> list = new ArrayList<>();
-        int color = Color.parseColor("#00897B");
-        list.add(new FeedItem("TAZKIRAH", "Al-Quran", color,
-                "\"Sesungguhnya bersama setiap kesulitan ada kemudahan.\" (Surah Al-Insyirah: 6)"));
-        list.add(new FeedItem("TAZKIRAH", "Al-Quran", color,
-                "\"Ingatlah, hanya dengan mengingati Allah hati menjadi tenang.\" (Surah Ar-Ra'd: 28)"));
-        list.add(new FeedItem("TAZKIRAH", "Al-Quran", color,
-                "\"Dan bertawakallah kepada Allah. Dan cukuplah Allah sebagai Pengawas.\" (Surah Al-Ahzab: 3)"));
-        list.add(new FeedItem("TAZKIRAH", "Al-Quran", color,
-                "\"Dan mintalah pertolongan (kepada Allah) dengan sabar dan solat.\" (Surah Al-Baqarah: 45)"));
-        list.add(new FeedItem("TAZKIRAH", "Al-Quran", color,
-                "\"Dan apabila hamba-hamba-Ku bertanya kepadamu tentang Aku, maka sungguh Aku dekat.\" (Surah Al-Baqarah: 186)"));
-        list.add(new FeedItem("TAZKIRAH", "Al-Quran", color,
-                "\"Cukuplah Allah bagi kami, dan Dia adalah sebaik-baik Pelindung.\" (Surah Ali 'Imran: 173)"));
-        list.add(new FeedItem("TAZKIRAH", "Al-Quran", color,
-                "\"Dan Dia mendapati engkau mencari-cari (jalan), lalu Dia memberikan petunjuk.\" (Surah Ad-Dhuha: 7)"));
-        list.add(new FeedItem("TAZKIRAH", "Al-Quran", color,
-                "\"Maka bersabarlah engkau dengan kesabaran yang baik.\" (Surah Al-Ma'arij: 5)"));
-        return list;
+        List<FeedItem> pool = new ArrayList<>();
+        int qColor = Color.parseColor("#00897B");
+        int hColor = Color.parseColor("#1565C0");
+
+        pool.add(new FeedItem("TAZKIRAH", "Al-Quran", qColor,
+                "\"Bersama setiap kesulitan ada kemudahan.\" (Al-Insyirah: 6)"));
+        pool.add(new FeedItem("TAZKIRAH", "Al-Quran", qColor,
+                "\"Hanya dengan mengingati Allah hati menjadi tenang.\" (Ar-Ra'd: 28)"));
+        pool.add(new FeedItem("TAZKIRAH", "Al-Quran", qColor,
+                "\"Bertawakallah kepada Allah. Cukuplah Dia sebagai Pengawas.\" (Al-Ahzab: 3)"));
+        pool.add(new FeedItem("TAZKIRAH", "Al-Quran", qColor,
+                "\"Mintalah pertolongan dengan sabar dan solat.\" (Al-Baqarah: 45)"));
+        pool.add(new FeedItem("TAZKIRAH", "Al-Quran", qColor,
+                "\"Sesungguhnya Allah beserta orang-orang yang sabar.\" (Al-Baqarah: 153)"));
+        pool.add(new FeedItem("TAZKIRAH", "Al-Quran", qColor,
+                "\"Allah tidak membebani seseorang melainkan sesuai kesanggupannya.\" (Al-Baqarah: 286)"));
+        pool.add(new FeedItem("TAZKIRAH", "Al-Quran", qColor,
+                "\"Janganlah berputus asa dari rahmat Allah.\" (Az-Zumar: 53)"));
+        pool.add(new FeedItem("TAZKIRAH", "Al-Quran", qColor,
+                "\"Barang siapa bertakwa, Allah bukakan jalan keluar baginya.\" (At-Talaq: 2)"));
+        pool.add(new FeedItem("TAZKIRAH", "Al-Quran", qColor,
+                "\"Solat mencegah dari perbuatan keji dan mungkar.\" (Al-'Ankabut: 45)"));
+        pool.add(new FeedItem("TAZKIRAH", "Hadis", hColor,
+                "\"Senyummu kepada saudaramu adalah sedekah.\" (HR. Tirmizi)"));
+        pool.add(new FeedItem("TAZKIRAH", "Hadis", hColor,
+                "\"Sebaik-baik manusia ialah yang paling bermanfaat bagi orang lain.\" (HR. Ahmad)"));
+        pool.add(new FeedItem("TAZKIRAH", "Hadis", hColor,
+                "\"Sesiapa menuntut ilmu, Allah mudahkan jalan ke syurga.\" (HR. Muslim)"));
+        pool.add(new FeedItem("TAZKIRAH", "Hadis", hColor,
+                "\"Setiap amal bergantung kepada niatnya.\" (HR. Bukhari & Muslim)"));
+
+        // Shuffle so order is different every refresh cycle
+        Collections.shuffle(pool);
+        return pool;
     }
 
     private List<String> parseRssTitles(String xml, int limit) {

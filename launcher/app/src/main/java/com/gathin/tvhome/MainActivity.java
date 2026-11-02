@@ -163,6 +163,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     private ImageView heroArt;
     /** config.xml cinematic_dots: false leaves the dock position dots out of the cinematic shelf. */
     private boolean heroDotsShown = true;
+    private boolean dockTitle = false;
     /** The artwork's opacity behind the cinematic shelf (config.xml cinematic_art); 0 leaves it out. */
     private float heroArtAlpha = 0.5f;
 
@@ -513,7 +514,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         if (cinematic) setUpCinematicShelf(cfg.cinematicScrim);
         // dock_title false: the name above the dock (and the cinematic lines under it) never shows; the glow
         // still follows the dock.
-        if (!cfg.dockTitle) hero.setVisibility(View.GONE);
+        dockTitle = cfg.dockTitle;
+        if (!dockTitle) hero.setVisibility(View.GONE);
         greeting = findViewById(R.id.greeting);
         clockBlock = findViewById(R.id.leftBlock);
         greetingColor = greeting.getCurrentTextColor();
@@ -1892,6 +1894,19 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     // ---- top shelf -------------------------------------------------------------------------------
 
     private void showHero(int position, float dockTopInRoot) {
+        if (!dockTitle) {
+            if (hero != null) {
+                hero.setVisibility(View.GONE);
+                hero.setAlpha(0f);
+            }
+            if (ambientGlow) {
+                int color = adapter.ambientColorAt(position);
+                setAmbient(color);
+                ambient.setAlpha(1f);
+            }
+            heroShown = false;
+            return;
+        }
         String label = adapter.labelAt(position);
         int color = adapter.ambientColorAt(position);
         float y = dockTopInRoot - 14 * density - 26 * density - hero.getHeight();

@@ -415,7 +415,7 @@ public class PrayerHelper {
                     slots[i].setBackgroundResource(R.drawable.bg_prayer_active);
                     if (names[i] != null) names[i].setTextColor(0xFFFFFFFF);
                 } else {
-                    slots[i].setBackground(null);
+                    slots[i].setBackgroundResource(R.drawable.bg_prayer_slot_inactive);
                     if (names[i] != null) names[i].setTextColor(0xB3FFFFFF);
                 }
             }
