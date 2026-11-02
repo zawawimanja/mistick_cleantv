@@ -162,8 +162,8 @@ public class DynamicFeedHelper {
                 "USD/MYR: 4.42 | SGD/MYR: 3.31 | EUR/MYR: 4.78"));
         feedItems.add(new FeedItem("SUKAN", "Bola Sepak", Color.parseColor("#2E7D32"),
                 "Liga Perdana Inggeris & Liga Super Malaysia bersambung minggu ini."));
-        feedItems.add(new FeedItem("TAZKIRAH", "Hadith Sahih", Color.parseColor("#00897B"),
-                "\"Sebaik-baik manusia adalah yang paling bermanfaat bagi orang lain.\" (HR. Ahmad)"));
+        feedItems.add(new FeedItem("TAZKIRAH", "Al-Quran", Color.parseColor("#00897B"),
+                "\"Sesungguhnya bersama setiap kesulitan ada kemudahan.\" (Surah Al-Insyirah: 6)"));
     }
 
     public void fetchFeedsAsync() {
@@ -204,11 +204,12 @@ public class DynamicFeedHelper {
     private List<FeedItem> fetchGoogleNews() {
         List<FeedItem> list = new ArrayList<>();
         try {
+            // Main news feed (filtered to exclude any politics)
             String xml = httpGet("https://news.google.com/rss?hl=ms&gl=MY&ceid=MY:ms", 6000);
             if (xml != null && !xml.isEmpty()) {
-                List<String> titles = parseRssTitles(xml, 5);
+                List<String> titles = parseRssTitles(xml, 25);
                 for (String t : titles) {
-                    // Google news format often has "Title - Source"
+                    if (list.size() >= 5) break;
                     String cleanTitle = t;
                     String srcName = "Berita Semasa";
                     int lastDash = t.lastIndexOf(" - ");
@@ -216,13 +217,55 @@ public class DynamicFeedHelper {
                         cleanTitle = t.substring(0, lastDash).trim();
                         srcName = t.substring(lastDash + 3).trim();
                     }
-                    list.add(new FeedItem("BERITA", srcName, Color.parseColor("#D32F2F"), cleanTitle));
+                    if (!isPolitical(cleanTitle)) {
+                        list.add(new FeedItem("BERITA", srcName, Color.parseColor("#D32F2F"), cleanTitle));
+                    }
+                }
+            }
+            // If less than 4 items after filtering politics, supplement with technology/science news
+            if (list.size() < 4) {
+                String techXml = httpGet("https://news.google.com/rss/headlines/section/topic/TECHNOLOGY?hl=ms&gl=MY&ceid=MY:ms", 5000);
+                if (techXml != null && !techXml.isEmpty()) {
+                    List<String> techTitles = parseRssTitles(techXml, 10);
+                    for (String t : techTitles) {
+                        if (list.size() >= 5) break;
+                        String cleanTitle = t;
+                        String srcName = "Teknologi & Sains";
+                        int lastDash = t.lastIndexOf(" - ");
+                        if (lastDash > 0) {
+                            cleanTitle = t.substring(0, lastDash).trim();
+                            srcName = t.substring(lastDash + 3).trim();
+                        }
+                        if (!isPolitical(cleanTitle)) {
+                            list.add(new FeedItem("BERITA", srcName, Color.parseColor("#D32F2F"), cleanTitle));
+                        }
+                    }
                 }
             }
         } catch (Exception e) {
             Log.d(TAG, "News fetch skipped: " + e.getMessage());
         }
         return list;
+    }
+
+    private boolean isPolitical(String text) {
+        if (text == null || text.trim().isEmpty()) return false;
+        String lower = text.toLowerCase(java.util.Locale.ROOT);
+        String[] politicalTerms = {
+            "politik", "parlimen", "dewan rakyat", "dewan negara", "dun",
+            "pilihan raya", "pru", "prk", "prn", "parti", "pengundi", "undi",
+            "perdana menteri", "menteri", "tpm", "kabinet", "kerajaan perpaduan",
+            "pembangkang", "umno", "pkr", "pas", "dap", "bersatu", "amanah",
+            "barisan nasional", "pakatan harapan", "perikatan nasional",
+            "anwar ibrahim", "muhyiddin", "mahathir", "najib", "zahid hamidi",
+            "hadi awang", "sanusi", "rafizi", "akmal saleh", "ahli parlimen",
+            "adun", "usul", "sidang parlimen", "manifesto", "wakil rakyat",
+            "presiden parti", "setiausaha agung", "parti politik"
+        };
+        for (String term : politicalTerms) {
+            if (lower.contains(term)) return true;
+        }
+        return false;
     }
 
     private List<FeedItem> fetchBbcSports() {
@@ -270,16 +313,22 @@ public class DynamicFeedHelper {
     private List<FeedItem> getCuratedTazkirah() {
         List<FeedItem> list = new ArrayList<>();
         int color = Color.parseColor("#00897B");
-        list.add(new FeedItem("TAZKIRAH", "Hadith Sahih", color,
-                "\"Sebaik-baik manusia adalah yang paling bermanfaat bagi orang lain.\" (HR. Ahmad)"));
-        list.add(new FeedItem("TAZKIRAH", "Hadith Sahih", color,
-                "\"Senyummu di hadapan saudaramu adalah sedekah bagimu.\" (HR. Tirmidzi)"));
-        list.add(new FeedItem("TAZKIRAH", "Kata Hikmah", color,
-                "\"Kekayaan sebenar bukanlah dengan banyaknya harta, tetapi ketenangan jiwa.\" (HR. Bukhari)"));
         list.add(new FeedItem("TAZKIRAH", "Al-Quran", color,
                 "\"Sesungguhnya bersama setiap kesulitan ada kemudahan.\" (Surah Al-Insyirah: 6)"));
-        list.add(new FeedItem("TAZKIRAH", "Hadith Sahih", color,
-                "\"Barangsiapa menempuh jalan mencari ilmu, Allah mudahkan baginya jalan ke syurga.\" (HR. Muslim)"));
+        list.add(new FeedItem("TAZKIRAH", "Al-Quran", color,
+                "\"Ingatlah, hanya dengan mengingati Allah hati menjadi tenang.\" (Surah Ar-Ra'd: 28)"));
+        list.add(new FeedItem("TAZKIRAH", "Al-Quran", color,
+                "\"Dan bertawakallah kepada Allah. Dan cukuplah Allah sebagai Pengawas.\" (Surah Al-Ahzab: 3)"));
+        list.add(new FeedItem("TAZKIRAH", "Al-Quran", color,
+                "\"Dan mintalah pertolongan (kepada Allah) dengan sabar dan solat.\" (Surah Al-Baqarah: 45)"));
+        list.add(new FeedItem("TAZKIRAH", "Al-Quran", color,
+                "\"Dan apabila hamba-hamba-Ku bertanya kepadamu tentang Aku, maka sungguh Aku dekat.\" (Surah Al-Baqarah: 186)"));
+        list.add(new FeedItem("TAZKIRAH", "Al-Quran", color,
+                "\"Cukuplah Allah bagi kami, dan Dia adalah sebaik-baik Pelindung.\" (Surah Ali 'Imran: 173)"));
+        list.add(new FeedItem("TAZKIRAH", "Al-Quran", color,
+                "\"Dan Dia mendapati engkau mencari-cari (jalan), lalu Dia memberikan petunjuk.\" (Surah Ad-Dhuha: 7)"));
+        list.add(new FeedItem("TAZKIRAH", "Al-Quran", color,
+                "\"Maka bersabarlah engkau dengan kesabaran yang baik.\" (Surah Al-Ma'arij: 5)"));
         return list;
     }
 
