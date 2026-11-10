@@ -82,9 +82,7 @@ public class AzanReceiver extends BroadcastReceiver {
         Intent azanIntent = new Intent(context, AzanActivity.class);
         azanIntent.putExtra("prayer_name", prayerName);
         azanIntent.putExtra("location", helper.getLocation());
-        azanIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK 
-                | Intent.FLAG_ACTIVITY_CLEAR_TOP 
-                | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        azanIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         // 4. Guaranteed Full-Screen Intent via High-Priority Notification (Android 10+ background takeover)
         try {

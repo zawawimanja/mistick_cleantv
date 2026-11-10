@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.media.FaceDetector;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -21,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 /**
@@ -34,28 +37,38 @@ public final class OnlineWallpaperManager {
     private static final String KEY_INDEX = "wallpaper_cycle_index";
     private static final String ASSET_FILE = "wallpapers_nature.txt";
 
-    // 10 distinct, non-overlapping vehicle categories for strict rotation
+    // 10 distinct, non-overlapping vehicle categories for strict rotation (pure machines, no people)
     private static final String[][] MASTER_CATEGORIES = {
         // 0: Supercars & Sports Cars
-        {"supercar", "ferrari", "lamborghini", "porsche 911", "bugatti", "chevrolet corvette", "nissan gtr", "classic muscle car"},
+        {"supercar automobile parked", "ferrari sports car vehicle", "lamborghini automobile", "porsche 911 car exterior", "bugatti chiron vehicle", "chevrolet corvette sports car", "nissan gtr vehicle"},
         // 1: Aviation & Fighter Jets
-        {"fighter jet", "f-16 fighting falcon", "f-22 raptor", "airbus a350", "concorde aircraft", "private jet aircraft"},
-        // 2: Heavy Construction & Machinery (Excavator only 1 of 5 choices)
-        {"heavy excavator", "construction crane", "mining dump truck", "bulldozer caterpillar", "road roller compactor"},
+        {"fighter jet aircraft flight", "f-16 fighting falcon aircraft", "f-22 raptor airplane", "airbus a350 aircraft flight", "concorde aircraft supersonic", "commercial airliner airplane flight"},
+        // 2: Heavy Construction & Machinery
+        {"caterpillar excavator machinery", "construction crane machinery", "mining dump truck vehicle", "bulldozer caterpillar machinery", "road roller compactor vehicle"},
         // 3: Emergency & Rescue
-        {"fire engine", "firetruck", "emergency ambulance", "airport rescue fire truck", "coast guard cutter"},
+        {"fire engine vehicle", "firetruck vehicle", "emergency ambulance vehicle", "airport crash tender vehicle", "coast guard cutter ship"},
         // 4: Trains & High Speed Rail
-        {"shinkansen bullet train", "high-speed train", "maglev train", "steam locomotive", "city monorail train"},
+        {"shinkansen bullet train in motion", "high-speed train locomotive", "maglev train railway", "steam locomotive train track", "city monorail train track"},
         // 5: Helicopters
-        {"military helicopter", "apache helicopter", "ch-47 chinook", "uh-60 black hawk"},
-        // 6: Marine, Speedboats & Naval
-        {"offshore speedboat", "luxury superyacht", "submarine naval", "aircraft carrier warship", "deep-sea submersible", "wave runner jet ski"},
-        // 7: Motorcycles & Scooters
-        {"superbike", "ducati panigale", "harley-davidson", "yamaha r1", "vespa scooter"},
-        // 8: Space & Special Flight
-        {"space rocket launch", "space shuttle", "mars rover", "hot air balloon", "airship zeppelin", "hovercraft"},
+        {"military helicopter flight", "apache attack helicopter", "ch-47 chinook helicopter", "uh-60 black hawk helicopter"},
+        // 6: Marine, Cargo Ships & Naval
+        {"cargo container ship at sea", "naval submarine underway", "aircraft carrier warship at sea", "unmanned deep-sea submersible", "luxury yacht at sea"},
+        // 7: Motorcycles (Parked, No Rider)
+        {"superbike motorcycle parked", "ducati panigale motorcycle parked", "harley-davidson motorcycle parked", "yamaha r1 motorcycle parked"},
+        // 8: Space & Unmanned Craft
+        {"space rocket launch flame", "space shuttle launch", "mars curiosity rover", "unmanned spacecraft space", "amphibious hovercraft vehicle"},
         // 9: Utility, Farm & Public Transport
-        {"combine harvester", "farm tractor", "semi-trailer truck", "double-decker bus", "school bus", "warehouse forklift"}
+        {"combine harvester farm field", "farm tractor field", "semi-trailer truck highway", "double-decker bus vehicle", "yellow school bus parked", "warehouse forklift machine"}
+    };
+
+    private static final String[] HUMAN_BLACKLIST = {
+        "person", "people", "man", "woman", "women", "men", "girl", "boy", "human",
+        "driver", "rider", "pilot", "crew", "passenger", "portrait", "standing",
+        "sitting", "model", "posing", "worker", "crowd", "face", "police", "soldier",
+        "child", "children", "baby", "family", "tourist", "pedestrian", "lady",
+        "guy", "bather", "swimmer", "cyclist", "biker", "operator", "officer",
+        "sailor", "astronaut", "captain", "racer", "selfie", "costume", "wearing",
+        "emily", "bea kyle", "bea_kyle", "look", "smile"
     };
 
     private static int sCategoryCycle = 0;
@@ -176,11 +189,23 @@ public final class OnlineWallpaperManager {
         }
     }
 
+    private static boolean isHumanContaminated(String text) {
+        if (text == null || text.isEmpty()) return false;
+        String lower = text.toLowerCase(Locale.US);
+        for (String keyword : HUMAN_BLACKLIST) {
+            if (lower.contains(keyword)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private static String fetchOneImageForTerm(String term) {
         try {
-            String encoded = URLEncoder.encode(term + " filetype:bitmap", "UTF-8");
+            String fullSearch = term + " filetype:bitmap -portrait -people -person -man -woman -men -women -girl -boy -human -driver -rider -pilot -crew -passenger -standing -sitting -posing -crowd -face -model -police -soldier -worker -tourist -pedestrian -family -child -children -sailor";
+            String encoded = URLEncoder.encode(fullSearch, "UTF-8");
             String apiUrl = "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch="
-                    + encoded + "&gsrnamespace=6&gsrlimit=5&prop=imageinfo&iiprop=url&iiurlwidth=1920&format=json";
+                    + encoded + "&gsrnamespace=6&gsrlimit=10&prop=imageinfo&iiprop=url&iiurlwidth=1920&format=json";
 
             URL url = new URL(apiUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -207,12 +232,18 @@ public final class OnlineWallpaperManager {
                             String key = keys.next();
                             JSONObject page = pages.optJSONObject(key);
                             if (page != null) {
+                                String title = page.optString("title", "");
+                                if (isHumanContaminated(title)) {
+                                    continue; // Skip images with humans in the title
+                                }
+
                                 JSONArray infos = page.optJSONArray("imageinfo");
                                 if (infos != null && infos.length() > 0) {
                                     JSONObject info = infos.getJSONObject(0);
                                     String imgUrl = info.optString("thumburl", info.optString("url", ""));
-                                    if (!imgUrl.isEmpty() && (imgUrl.contains(".jpg") || imgUrl.contains(".jpeg") || imgUrl.contains(".png") || imgUrl.contains(".webp"))) {
-                                        return imgUrl; // Take only the first valid image for this category!
+                                    if (!imgUrl.isEmpty() && !isHumanContaminated(imgUrl)
+                                            && (imgUrl.contains(".jpg") || imgUrl.contains(".jpeg") || imgUrl.contains(".png") || imgUrl.contains(".webp"))) {
+                                        return imgUrl; // Found a pure vehicle image without humans!
                                     }
                                 }
                             }
@@ -280,6 +311,13 @@ public final class OnlineWallpaperManager {
                 return null;
             }
 
+            // Verify with on-device face detector to guarantee NO humans in wallpapers
+            if (detectHumanFace(tempFile.getAbsolutePath())) {
+                Log.w(TAG, "Rejected wallpaper because human face was detected: " + urlString);
+                tempFile.delete();
+                return null;
+            }
+
             BitmapFactory.Options bounds = new BitmapFactory.Options();
             bounds.inJustDecodeBounds = true;
             BitmapFactory.decodeFile(tempFile.getAbsolutePath(), bounds);
@@ -303,6 +341,51 @@ public final class OnlineWallpaperManager {
             Log.w(TAG, "Fetch failed for " + urlString + ": " + e.getMessage());
             if (tempFile.exists()) tempFile.delete();
             return null;
+        }
+    }
+
+    private static boolean detectHumanFace(String filePath) {
+        try {
+            BitmapFactory.Options bounds = new BitmapFactory.Options();
+            bounds.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(filePath, bounds);
+            int origW = bounds.outWidth;
+            int origH = bounds.outHeight;
+            if (origW <= 0 || origH <= 0) return false;
+
+            int sample = 1;
+            while (origW / (sample * 2) >= 480) {
+                sample *= 2;
+            }
+
+            BitmapFactory.Options opts = new BitmapFactory.Options();
+            opts.inPreferredConfig = Bitmap.Config.RGB_565;
+            opts.inSampleSize = sample;
+
+            Bitmap bmp = BitmapFactory.decodeFile(filePath, opts);
+            if (bmp == null) return false;
+
+            int w = bmp.getWidth();
+            int h = bmp.getHeight();
+            if ((w % 2) != 0) w--;
+
+            Bitmap rgbBmp = bmp;
+            if (bmp.getConfig() != Bitmap.Config.RGB_565 || w != bmp.getWidth()) {
+                rgbBmp = Bitmap.createBitmap(w, h, Bitmap.Config.RGB_565);
+                Canvas canvas = new Canvas(rgbBmp);
+                canvas.drawBitmap(bmp, 0, 0, null);
+                if (rgbBmp != bmp) bmp.recycle();
+            }
+
+            FaceDetector detector = new FaceDetector(w, h, 1);
+            FaceDetector.Face[] faces = new FaceDetector.Face[1];
+            int count = detector.findFaces(rgbBmp, faces);
+            rgbBmp.recycle();
+
+            return count > 0;
+        } catch (Throwable t) {
+            Log.d(TAG, "Face detection check skipped: " + t.getMessage());
+            return false;
         }
     }
 }

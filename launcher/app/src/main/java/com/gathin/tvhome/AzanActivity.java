@@ -29,6 +29,7 @@ public class AzanActivity extends Activity {
     private AudioManager audioManager;
     private AudioFocusRequest focusRequest;
     private MediaPlayer mediaPlayer;
+    private int previousVolume = -1;
 
     public static boolean isRunning() {
         return sInstance != null;
@@ -101,8 +102,11 @@ public class AzanActivity extends Activity {
         try {
             audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
             if (audioManager != null) {
-                // Set volume to level 1 (gentle audible alert)
-                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 1, AudioManager.FLAG_SHOW_UI);
+                // Record previous volume and set Azan volume to 6 (as requested)
+                try {
+                    previousVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+                } catch (Exception ignored) {}
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 6, AudioManager.FLAG_SHOW_UI);
 
                 // Pause active media session on TV (Netflix, YouTube, SmartTube, etc.)
                 long now = SystemClock.uptimeMillis();
@@ -216,11 +220,32 @@ public class AzanActivity extends Activity {
                 } else {
                     audioManager.abandonAudioFocus(null);
                 }
+                // Restore previous volume
+                if (previousVolume >= 0) {
+                    try {
+                        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, previousVolume, 0);
+                    } catch (Exception ignored) {}
+                }
             }
         } catch (Exception ignored) {}
 
         sInstance = null;
-        finish();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            finishAndRemoveTask();
+        } else {
+            finish();
+        }
+
+        // Resume media playback in the app that was being watched before Azan
+        if (audioManager != null) {
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                try {
+                    long now = SystemClock.uptimeMillis();
+                    audioManager.dispatchMediaKeyEvent(new KeyEvent(now, now, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_PLAY, 0));
+                    audioManager.dispatchMediaKeyEvent(new KeyEvent(now, now, KeyEvent.ACTION_UP, KeyEvent.KEYCODE_MEDIA_PLAY, 0));
+                } catch (Exception ignored) {}
+            }, 600);
+        }
     }
 
     @Override

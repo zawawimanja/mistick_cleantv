@@ -240,9 +240,9 @@
             android:name=".AzanActivity"
             android:exported="true"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            android:launchMode="singleTask"
+            android:taskAffinity="com.gathin.tvhome.azan"
+            android:launchMode="singleInstance"
             android:excludeFromRecents="true"
-            android:noHistory="true"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden" />
 
         <receiver

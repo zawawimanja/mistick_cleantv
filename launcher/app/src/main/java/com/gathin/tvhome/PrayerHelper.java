@@ -441,8 +441,8 @@ public class PrayerHelper {
         try {
             AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
             if (am != null) {
-                // Set Volume to 1 for gentle alert
-                am.setStreamVolume(AudioManager.STREAM_MUSIC, 1, AudioManager.FLAG_SHOW_UI);
+                // Set Volume to 6 (as requested)
+                am.setStreamVolume(AudioManager.STREAM_MUSIC, 6, AudioManager.FLAG_SHOW_UI);
 
                 // Request Audio Focus so Netflix / other media ducks or pauses
                 AudioAttributes playbackAttributes = new AudioAttributes.Builder()
